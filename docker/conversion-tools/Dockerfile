@@ -54,6 +54,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
 # Tilemaker
     git clone --depth 1 --branch $TILEMAKER_GIT_TAG $TILEMAKER_GIT_REPO && \
     cd tilemaker && \
+    mkdir build && \
     cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && \
     make install && \
