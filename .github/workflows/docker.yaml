@@ -32,6 +32,6 @@ jobs:
           push: true
           context: .
           file: docker/conversion-tools/Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action:latest
+            ghcr.io/cmahnke/map-action/conversions-tools:latest
