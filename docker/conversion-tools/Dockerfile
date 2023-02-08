@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:experimental
 
-FROM alpine:3.16
+FROM alpine:3.17
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source=https://github.com/cmahnke/map-action
 
 ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev protozero-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev libosmium-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev" \
-    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4 rapidjson boost libosmium gdal-tools lua5.1 gettext bash protobuf libffi openssl" \
+    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4 rapidjson boost libosmium gdal-tools lua5.1 gettext bash protobuf libffi libcrypto3" \
     OSMIUM_GIT_REPO="https://github.com/osmcode/osmium-tool.git" \
     OSMIUM_GIT_TAG="v1.14.0" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
