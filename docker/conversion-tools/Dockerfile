@@ -16,7 +16,8 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
     SHAPELIB_GIT_TAG="v1.5.0" \
     TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
-    TILEMAKER_GIT_TAG="v2.2.0" \
+    #TILEMAKER_GIT_TAG="v2.2.0" \
+    TILEMAKER_GIT_TAG="master" \
     BUILD_DIR=/tmp/build
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
