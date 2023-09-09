@@ -9,3 +9,13 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/docker/osmosis/"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
+  - package-ecosystem: "docker"
+    directory: "/docker/conversion-tools/"
+    schedule:
+      interval: "daily"

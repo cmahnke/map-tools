@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 OPENMAPTILES_GIT=https://github.com/openmaptiles/openmaptiles.git
 OPENMAPTILES_TAG="v3.12.2"

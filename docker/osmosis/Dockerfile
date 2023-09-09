@@ -5,7 +5,6 @@ FROM alpine:3.12
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL "com.github.actions.name"="GitHub Actions OpenStreetmap download and pbf conversion"
-#LABEL "com.github.actions.description"="This is a simple GitHub Action to convert imageges from and to JPEG-XL"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
 #ARG BBOX=20.4200,54.8700,21.3500,55.7500
