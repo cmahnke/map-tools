@@ -2,13 +2,14 @@
 
 FROM alpine:3.18 AS builder
 
-ENV BUILD_DEPS="git maven protobuf gcompat" \
+ENV BUILD_DEPS="git maven gcompat libc6-compat" \
     BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
     BAREMAPS_TAG="v0.7.1" \
     BUILD_DIR=/tmp/build
 
 RUN apk --update upgrade &&\
     apk add --no-cache $BUILD_DEPS && \
+    ldconfig / && \
     mkdir -p $BUILD_DIR && \
     cd $BUILD_DIR && \
     git clone $BAREMAPS_REPO --branch $BAREMAPS_TAG --single-branch baremaps && \
