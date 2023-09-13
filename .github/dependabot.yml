@@ -19,3 +19,7 @@ updates:
     directory: "/docker/conversion-tools/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/docker/baremaps/"
+    schedule:
+      interval: "daily"
