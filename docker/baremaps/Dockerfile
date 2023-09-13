@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-17-focal AS builder
+FROM maven:3-eclipse-temurin-19-focal AS builder
 
 ENV BUILD_DEPS="git maven gcompat libc6-compat" \
     BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
