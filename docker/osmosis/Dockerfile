@@ -18,7 +18,7 @@ ENV BUILD_DEPS="git gradle curl libxml2-utils" \
     MAP_FILE_NAME=map.osm
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories && \
-    apk --update upgrade &&\
+    apk --update upgrade && \
     apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
     mkdir -p $BUILD_DIR $DATA_DIR && \
 # Install Osmosis

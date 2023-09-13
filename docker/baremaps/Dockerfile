@@ -4,7 +4,7 @@ FROM maven:3-eclipse-temurin-17-focal AS builder
 
 ENV BUILD_DEPS="git maven gcompat libc6-compat" \
     BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
-    BAREMAPS_TAG="v0.7.1" \
+    BAREMAPS_TAG="main" \
     BUILD_DIR=/tmp/build
 
 RUN mkdir -p $BUILD_DIR && \
@@ -22,12 +22,12 @@ ENV RUN_DEPS="openjdk17-jre openjdk17-jre-headless" \
     BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 
-COPY --from=builder $BUILD_DIR/baremaps/baremaps-cli/target/baremaps-0.7.1-incubating-bin.tar.gz $BAREMAPS_DIR/..
+COPY --from=builder $BUILD_DIR/baremaps/baremaps-cli/target/*.tar.gz $BAREMAPS_DIR/..
 
 RUN apk --update upgrade && \
     apk add --no-cache $RUN_DEPS && \
     cd $BAREMAPS_DIR/.. && \
     tar xzf *-bin.tar.gz && \
-    rm -rf *-bin.tar.gz && \
-    ln -s baremaps-* baremaps && \
+    rm -rf *.tar.gz && \
+    ln -s *baremaps-*-bin baremaps && \
     export PATH=$PATH:$BAREMAPS/bin
