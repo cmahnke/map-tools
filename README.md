@@ -19,5 +19,11 @@ docker buildx build -f docker/conversion-tools/Dockerfile .
 docker buildx build -f docker/osmosis/Dockerfile .
 ```
 
+## Baremaps
+
+```
+docker buildx build -f docker/baremaps/Dockerfile .
+```
+
 # TODO
 * Generate Image with map data
