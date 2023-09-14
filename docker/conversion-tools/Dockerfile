@@ -5,8 +5,8 @@ FROM alpine:3.18
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev protozero-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev libosmium-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev" \
-    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4 rapidjson boost libosmium gdal-tools lua5.1 gettext bash protobuf libffi libcrypto3" \
+ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev protozero-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev libosmium-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev postgresql-dev bzip2-dev proj-dev potrace-dev cimg" \
+    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4 rapidjson boost libosmium gdal-tools lua5.1 gettext bash protobuf libffi libcrypto3 proj postgresql-libs potrace" \
     OSMIUM_GIT_REPO="https://github.com/osmcode/osmium-tool.git" \
     OSMIUM_GIT_TAG="v1.15.0" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
@@ -20,6 +20,10 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
     TILEMAKER_GIT_TAG="v2.4.0" \
     TILEMAKER_GIT_TAG="master" \
+    NLOHMANN_JSON_GIT_REPO="https://github.com/nlohmann/json.git" \
+    NLOHMANN_JSON_GIT_TAG="v3.11.2" \
+    OSM2PGSQL_GIT_REPO="https://github.com/openstreetmap/osm2pgsql.git" \
+    OSM2PGSQL_GIT_TAG="1.9.2" \
     BUILD_DIR=/tmp/build
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
@@ -36,35 +40,57 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     cd osmium-tool && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium-tool .. && \
     make install && \
     cd ../.. && \
 # Tippecanoe
     git clone --depth 1 --branch $TIPPECANOE_GIT_TAG $TIPPECANOE_GIT_REPO && \
     cd tippecanoe && \
-    PREFIX=/usr make -j install && \
+    PREFIX=/opt/tippecanoe make -j install && \
     cd .. && \
 ## OSM C Tools
     git clone --depth 1 --branch $OSMCTOOLS_GIT_TAG $OSMCTOOLS_GIT_REPO && \
     cd osmctools && \
     autoreconf --install && \
-    ./configure --prefix=/usr && \
+    ./configure --prefix=/opt/osmctools && \
     make && make install && \
     cd .. && \
+# nlohmann/json
+    git clone --depth 1 --branch $NLOHMANN_JSON_GIT_TAG $NLOHMANN_JSON_GIT_REPO && \
+    cd json && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/osm2pgsql .. && \
+    make install && \
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/osm2pgsql/share/pkgconfig && \
+    cd ../.. && \
+# osm2pgsql
+    git clone --depth 1 --branch $OSM2PGSQL_GIT_TAG $OSM2PGSQL_GIT_REPO && \
+    cd osm2pgsql && \
+    mkdir build && cd build && \
+    cmake -DNLOHMANN_INCLUDE_DIR=/opt/osm2pgsql/include -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/osm2pgsql .. && \
+    make install && \
+    cd ../.. && \
 # ShapeLib
     git clone --depth 1 --branch $SHAPELIB_GIT_TAG $SHAPELIB_GIT_REPO && \
     cd shapelib && \
-    ./autogen.sh --prefix=/usr && \
+    ./autogen.sh --prefix=/opt/shapelib && \
     make && make install && \
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/shapelib/lib/pkgconfig && \
     cd .. && \
 # Tilemaker
     git clone --depth 1 --branch $TILEMAKER_GIT_TAG $TILEMAKER_GIT_REPO && \
     cd tilemaker && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && \
+    cmake -DLIBSHP_INCLUDE_DIR=/opt/shapelib/include -DLIBSHP_LIBRARIES=/opt/shapelib/lib/libshp.a -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/tilemaker .. && \
     make install && \
     cd ../.. && \
+
+# Create links
+    for filepath in /opt/**/bin/* ; do \
+        filename=$(basename $filepath) ; \
+        ln -s $filepath /usr/local/bin/$filename ; \
+    done && \
 
 # Cleanup
     cd / && rm -rf $BUILD_DIR  && \

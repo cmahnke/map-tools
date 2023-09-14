@@ -52,9 +52,9 @@ RUN --mount=target=/mnt/build-context \
     apk del ${REQ_BUILD} && \
     rm -rf /var/cache/apk/*
 
-# Start from an emty image to get rid of layers
-#FROM scratch
-
-#COPY --from=postgis / /
-
-# TODO: Add index SQL to entrypoint
+# Restart from an emty image to get rid of layers
+#FROM ghcr.io/cmahnke/wenn-man-nicht-alles-selber-macht/postgis:15-3.3-alpine
+#LABEL maintainer="cmahnke@gmail.com"
+#LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+#COPY --from=postgis $PGDATA $PGDATA
+#COPY docker/database/templates/indexes.sql /docker-entrypoint-initdb.d/20_indexes.sql
