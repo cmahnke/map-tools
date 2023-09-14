@@ -52,7 +52,7 @@ RUN --mount=target=/mnt/build-context \
     apk del ${REQ_BUILD} && \
     rm -rf /var/cache/apk/*
 
-# Restart from an emty image to get rid of layers
+# Restart from an empty image to get rid of layers
 #FROM ghcr.io/cmahnke/wenn-man-nicht-alles-selber-macht/postgis:15-3.3-alpine
 #LABEL maintainer="cmahnke@gmail.com"
 #LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action

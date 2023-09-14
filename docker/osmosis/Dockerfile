@@ -42,4 +42,5 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut 
     fi && \
 # Cleanup
     cd / && rm -rf $BUILD_DIR /root/.gradle && \
-    apk del $BUILD_DEPS
+    apk del $BUILD_DEPS && \
+    rm -rf /var/cache/apk/*

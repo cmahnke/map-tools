@@ -19,7 +19,6 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
 ENV RUN_DEPS="openjdk17-jre openjdk17-jre-headless" \
-    BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 
 COPY --from=builder $BUILD_DIR/baremaps/baremaps-cli/target/*.tar.gz $BAREMAPS_DIR/..
@@ -30,4 +29,6 @@ RUN apk --update upgrade && \
     tar xzf *-bin.tar.gz && \
     rm -rf *.tar.gz && \
     ln -s *baremaps-*-bin baremaps && \
-    export PATH=$PATH:$BAREMAPS/bin
+    export PATH=$PATH:$BAREMAPS/bin && \
+# Cleanup
+    rm -rf /var/cache/apk/* /root/.cache
