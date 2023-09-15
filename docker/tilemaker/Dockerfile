@@ -6,7 +6,7 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
 ENV BUILD_DEPS="git wget cmake make libtool autoconf automake alpine-sdk zlib-dev sqlite-dev bzip2-dev lz4-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev bzip2-dev rapidjson-dev" \
-    RUN_DEPS="zlib sqlite-libs bzip2 lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf lua5.1 bash rapidjson" \
+    RUN_DEPS="zlib sqlite-libs bzip2 lz4-libs boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf lua5.1-libs bash" \
     SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
     SHAPELIB_GIT_TAG="v1.5.0" \
     TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
@@ -29,9 +29,10 @@ RUN --mount=target=/mnt/build-context \
     cd tilemaker && \
     mkdir build && \
     cd build && \
-# TODO: Check how to enable -DTILEMAKER_BUILD_STATIC=ON 
+# TODO: Check how to enable -DTILEMAKER_BUILD_STATIC=ON
     cmake -DLIBSHP_INCLUDE_DIR=/opt/tilemaker/include -DLIBSHP_LIBRARIES=/opt/tilemaker/lib/libshp.a -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/tilemaker .. && \
     make install && \
+    cp -r ../resources /opt/tilemaker && \
     cd / && \
 
 # Create links
