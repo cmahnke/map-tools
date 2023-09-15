@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-#FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
 
 FROM alpine:3.18
 
@@ -8,8 +8,8 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
 ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev protozero-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev libosmium-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev postgresql-dev bzip2-dev proj-dev potrace-dev cimg" \
-    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams libosmium protobuf gdal lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
-# Additional packages: libffi, gdal-tools
+    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf gdal lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
+# Additional packages: libffi, gdal-tools, libosmium
     OSMIUM_GIT_REPO="https://github.com/osmcode/osmium-tool.git" \
     OSMIUM_GIT_TAG="v1.15.0" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
@@ -27,7 +27,7 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     OSM2PGSQL_GIT_TAG="1.9.2" \
     BUILD_DIR=/tmp/build
 
-#COPY --from=osmium /opt/osmium /opt/osmium
+COPY --from=osmium /opt/osmium /opt/osmium
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
@@ -38,14 +38,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
 # Needed for newer Lua versions
 #    ln -s /usr/bin/lua5.4 /usr/bin/lua && \
     cd $BUILD_DIR && \
-# Osmium Tool
-    git clone --depth 1 --branch $OSMIUM_GIT_TAG $OSMIUM_GIT_REPO && \
-    cd osmium-tool && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium-tool -DBUILD_TESTING=OFF .. && \
-    make install && \
-    cd ../.. && \
 # Tippecanoe
     git clone --depth 1 --branch $TIPPECANOE_GIT_TAG $TIPPECANOE_GIT_REPO && \
     cd tippecanoe && \
