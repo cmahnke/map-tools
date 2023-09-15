@@ -128,7 +128,7 @@ jobs:
             ghcr.io/cmahnke/map-action/osmium:latest
 
   build_tilemaker:
-    name: Push osmium Docker image to GitHub Packages
+    name: Push tilemaker Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
