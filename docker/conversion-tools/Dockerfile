@@ -1,26 +1,20 @@
 # syntax=docker/dockerfile:experimental
 
 FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-action/tilemaker:latest AS tilemaker
 
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev protozero-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev libosmium-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev postgresql-dev bzip2-dev proj-dev potrace-dev cimg" \
-    RUN_DEPS="zlib protozero sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf gdal lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
+ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev postgresql-dev bzip2-dev proj-dev potrace-dev cimg" \
+    RUN_DEPS="zlib sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf gdal lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
 # Additional packages: libffi, gdal-tools, libosmium
-    OSMIUM_GIT_REPO="https://github.com/osmcode/osmium-tool.git" \
-    OSMIUM_GIT_TAG="v1.15.0" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
     TIPPECANOE_GIT_TAG="1.36.0" \
     OSMCTOOLS_GIT_REPO="https://gitlab.com/osm-c-tools/osmctools.git" \
     OSMCTOOLS_GIT_TAG="0.9" \
-    SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
-    SHAPELIB_GIT_TAG="v1.5.0" \
-    TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
-    TILEMAKER_GIT_TAG="v2.4.0" \
-    TILEMAKER_GIT_TAG="master" \
     NLOHMANN_JSON_GIT_REPO="https://github.com/nlohmann/json.git" \
     NLOHMANN_JSON_GIT_TAG="v3.11.2" \
     OSM2PGSQL_GIT_REPO="https://github.com/openstreetmap/osm2pgsql.git" \
@@ -28,6 +22,7 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     BUILD_DIR=/tmp/build
 
 COPY --from=osmium /opt/osmium /opt/osmium
+COPY --from=tilemaker /opt/tilemaker /opt/tilemaker
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
@@ -64,30 +59,14 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     mkdir build && cd build && \
     cmake -DNLOHMANN_INCLUDE_DIR=/opt/osm2pgsql/include -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX:PATH=/opt/osm2pgsql .. && \
     make install && \
-    cd ../.. && \
-# ShapeLib
-    git clone --depth 1 --branch $SHAPELIB_GIT_TAG $SHAPELIB_GIT_REPO && \
-    cd shapelib && \
-    ./autogen.sh --prefix=/opt/shapelib && \
-    make && make install && \
-    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/shapelib/lib/pkgconfig && \
-    cd .. && \
-# Tilemaker
-    git clone --depth 1 --branch $TILEMAKER_GIT_TAG $TILEMAKER_GIT_REPO && \
-    cd tilemaker && \
-    mkdir build && \
-    cd build && \
-    cmake -DLIBSHP_INCLUDE_DIR=/opt/shapelib/include -DLIBSHP_LIBRARIES=/opt/shapelib/lib/libshp.a -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/tilemaker .. && \
-    make install && \
-    cd ../.. && \
+    cd / && \
 
 # Create links
     for filepath in /opt/**/bin/* ; do \
         filename=$(basename $filepath) ; \
         ln -s $filepath /usr/local/bin/$filename ; \
     done && \
-
 # Cleanup
-    cd / && rm -rf $BUILD_DIR  && \
+    rm -rf $BUILD_DIR  && \
     apk del $BUILD_DEPS && \
     rm -rf /var/cache/apk/* /root/.cache
