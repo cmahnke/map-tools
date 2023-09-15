@@ -24,7 +24,7 @@ RUN --mount=target=/mnt/build-context \
     git clone $PROTOZERO_REPO --branch $PROTOZERO_TAG --single-branch && \
     cd protozero && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DBUILD_TESTING=OFF .. && \
     make && \
     cd ../.. && \
 # LibOsmium
