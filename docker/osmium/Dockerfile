@@ -33,7 +33,7 @@ RUN --mount=target=/mnt/build-context \
     git clone $LIBOSMIUM_REPO --branch $LIBOSMIUM_TAG --single-branch && \
     cd libosmium && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make && \
     cd ../.. && \
 # Osmium tool
