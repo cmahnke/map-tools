@@ -29,3 +29,7 @@ updates:
     directory: "/docker/database/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/docker/osmium/"
+    schedule:
+      interval: "daily"

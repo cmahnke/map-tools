@@ -9,6 +9,7 @@ jobs:
   build_conversion_tools:
     name: Push conversion-tools Docker image to GitHub Packages
     runs-on: ubuntu-latest
+    needs: build_osmium
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
