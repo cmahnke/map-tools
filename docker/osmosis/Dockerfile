@@ -6,9 +6,6 @@ FROM alpine:3.12
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-#ARG BBOX=20.4200,54.8700,21.3500,55.7500
-ARG BBOX=""
-
 ENV BUILD_DEPS="git gradle curl libxml2-utils" \
     RUN_DEPS="openjdk8-jre" \
     BUILD_DIR=/tmp/build \
@@ -29,17 +26,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut 
 #    rm -rf build/distibution && \
     cd .. && mkdir -p /opt/osmosis && \
     mv package/* /opt/osmosis && \
-# Cleanup Osmosis build
-    cd / && rm -rf $BUILD_DIR/* && \
-# Get XML from bounding box
-    if [ -n "$BBOX" ] ; then \
-        curl -g -o $BUILD_DIR/$MAP_FILE_NAME "https://overpass-api.de/api/map?bbox=$BBOX" && \
-# Convert Data
-        /opt/osmosis/bin/osmosis --read-xml $BUILD_DIR/$MAP_FILE_NAME --write-pbf $BUILD_DIR/$MAP_FILE_NAME.pbf && \
-        rm $BUILD_DIR/$MAP_FILE_NAME && \
-        mv $BUILD_DIR/$MAP_FILE_NAME.pbf $DATA_DIR/ && \
-        cd / && rm -rf /opt/osmosis ; \
-    fi && \
 # Cleanup
     cd / && rm -rf $BUILD_DIR /root/.gradle && \
     apk del $BUILD_DEPS && \

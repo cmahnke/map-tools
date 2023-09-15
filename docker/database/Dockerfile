@@ -47,9 +47,11 @@ RUN --mount=target=/mnt/build-context \
     su postgres -c 'vacuumdb -U $POSTGRES_USER -f -a' && \
     su postgres -c "pg_ctl stop -D $PGDATA" && \
     #pg_archivecleanup -d /var/lib/postgresql/data/pg_wal $(pg_controldata | grep "Latest checkpoint's REDO WAL" | cut -d: -f2 | tr -d [:space:]) && \
+    #psql -U $POSTGRES_USER -c "checkpoint;"
+    #pg_dump -U $POSTGRES_USER $POSTGRES_DB | gzip > $POSTGRES_DB.sql.gz
 # Cleanup
     rm -rf $BAREMAPS_DIR $BUILD_DIR && \
-    apk del ${REQ_BUILD} && \
+    apk del $BUILD_DEPS && \
     rm -rf /var/cache/apk/*
 
 # Restart from an empty image to get rid of layers
