@@ -6,7 +6,7 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
 ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev" \
-    RUN_DEPS="expat gdal bzip2 zlib boost1.82-program_options lz4-libs geos" \
+    RUN_DEPS="expat gdal libbz2 zlib boost1.82-program_options lz4-libs geos" \
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
