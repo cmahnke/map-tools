@@ -88,5 +88,6 @@ jobs:
         run: |
           for filepath in /opt/**/bin/*
           do
-              ldd$filepath)
+            echo "Checking $filepath"
+            ldd $filepath
           done
