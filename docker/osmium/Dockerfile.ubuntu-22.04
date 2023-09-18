@@ -1,0 +1,53 @@
+# syntax=docker/dockerfile:experimental
+
+FROM ubuntu:22.04
+
+LABEL maintainer="cmahnke@gmail.com"
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+
+ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev" \
+    RUN_DEPS="expat libgdal30 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libprotobuf23" \
+    #boost1.82-program_options
+    PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
+    PROTOZERO_TAG="v1.7.1" \
+    LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
+    LIBOSMIUM_TAG="v2.19.0" \
+    OSMIUM_TOOL_REPO=https://github.com/osmcode/osmium-tool \
+    OSMIUM_TOOL_TAG="v1.15.0" \
+    BUILD_DIR=/tmp/build
+
+RUN --mount=target=/mnt/build-context \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -y $BUILD_DEPS $RUN_DEPS && \
+    mkdir -p $BUILD_DIR && \
+    cd $BUILD_DIR && \
+# Protozero
+    git clone $PROTOZERO_REPO --branch $PROTOZERO_TAG --single-branch && \
+    cd protozero && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DBUILD_TESTING=OFF .. && \
+    make && \
+    cd ../.. && \
+# LibOsmium
+# TODO: Check `proj`: See https://github.com/osmcode/osmium-proj
+    cd $BUILD_DIR && \
+    git clone $LIBOSMIUM_REPO --branch $LIBOSMIUM_TAG --single-branch && \
+    cd libosmium && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    make && \
+    cd ../.. && \
+# Osmium tool
+    git clone $OSMIUM_TOOL_REPO --branch $OSMIUM_TOOL_TAG --single-branch && \
+    cd osmium-tool && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF .. && \
+    make install && \
+    cd / && \
+    ln -s /opt/osmium/bin/osmium /usr/local/bin/osmium && \
+# Cleanup
+    rm -rf $BUILD_DIR && \
+    apt-get remove -y $BUILD_DEPS && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/apt/lists/*

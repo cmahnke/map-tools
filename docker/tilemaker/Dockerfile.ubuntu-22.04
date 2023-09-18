@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:experimental
+
+FROM ubuntu:22.04
+
+LABEL maintainer="cmahnke@gmail.com"
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+
+ENV BUILD_DEPS="git wget cmake make libtool autoconf automake libbz2-dev libsqlite3-dev liblua5.1-0-dev libboost-program-options-dev libboost-filesystem-dev libboost-iostreams-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev protobuf-compiler liblz4-dev libgeos-dev zlib1g-dev rapidjson-dev" \
+    RUN_DEPS="liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 bash" \
+    SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
+    SHAPELIB_GIT_TAG="v1.5.0" \
+    TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
+    TILEMAKER_GIT_TAG="v2.4.0" \
+    BUILD_DIR=/tmp/build
+
+RUN --mount=target=/mnt/build-context \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -y $BUILD_DEPS $RUN_DEPS && \
+    mkdir -p $BUILD_DIR && \
+    cd $BUILD_DIR && \
+# ShapeLib
+    git clone --depth 1 --branch $SHAPELIB_GIT_TAG $SHAPELIB_GIT_REPO && \
+    cd shapelib && \
+    ./autogen.sh --prefix=/opt/tilemaker && \
+    make && make install && \
+    cd .. && \
+# Tilemaker
+    git clone --depth 1 --branch $TILEMAKER_GIT_TAG $TILEMAKER_GIT_REPO && \
+    cd tilemaker && \
+    mkdir build && \
+    cd build && \
+# TODO: Check how to enable -DTILEMAKER_BUILD_STATIC=ON
+    cmake -DLIBSHP_INCLUDE_DIR=/opt/tilemaker/include -DLIBSHP_LIBRARIES=/opt/tilemaker/lib/libshp.a -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/opt/tilemaker .. && \
+    make install && \
+    cp -r ../resources /opt/tilemaker && \
+    cd / && \
+
+# Create links
+    for filepath in /opt/**/bin/* ; do \
+        filename=$(basename $filepath) ; \
+        ln -s $filepath /usr/local/bin/$filename ; \
+    done && \
+# Cleanup
+    rm -rf $BUILD_DIR && \
+    apt-get remove -y $BUILD_DEPS && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/apt/lists/*
