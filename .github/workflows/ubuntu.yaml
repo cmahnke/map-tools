@@ -65,6 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_osmium, build_tilemaker]
     steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
+
       - name: Extract
         run: |
           sudo chmod +w /opt
@@ -76,13 +80,9 @@ jobs:
 
           docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
           docker create --name tilemaker ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
-          docker cp osmium:/opt/tilemaker /opt/tilemaker
+          docker cp tilemaker:/opt/tilemaker /opt/tilemaker
           docker rm -f tilemaker
           docker rmi docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
 
       - name: Check ldd
         run: |
