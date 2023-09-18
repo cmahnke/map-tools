@@ -1,0 +1,34 @@
+datasets:
+  costlines:
+    url: https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip
+    path: ./coastline/
+    postprocess: ogr2ogr -f 'ESRI Shapefile' -spat 1.34 42.59 25.13 57.95 ./coastline/water_polygons.shp {input_dir}/water_polygons.shp
+  urban_areas:
+    url: https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_urban_areas.zip
+    path: ./landcover/ne_10m_urban_areas/
+  glacier:
+    url: https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_glaciated_areas.zip
+    path: ./landcover/ne_10m_glaciated_areas/
+directories:
+  work: ./tmp
+  download: ./tmp/download
+  tiles: ./tmp/tiles
+commands:
+  tilemaker:
+    cmd: "docker run -it -v {pwd.parent}/:{pwd.parent} -w {pwd} ghcr.io/cmahnke/map-action/tilemaker /opt/tilemaker/bin/tilemaker"
+    opts: "--config ../tilemaker-config/config.json --process ../tilemaker-config/process.lua --store ./tmp/swap"
+#    opts: "--config ./config.json --process ./process.lua --store ./tmp/swap"
+    postprocess: "rm -rf ./tmp/swap/*"
+  osmium:
+    cmd: osmium tags-filter
+    opts: "-O --fsync"
+tags:
+  place: "/place"
+  boundary: "/type=boundary"
+  amenity: "/amenity"
+  waterway: "/waterway"
+  highway: "/highway"
+  railway: "/railway"
+  water: "/water"
+  park: "/park"
+  landuse: "/landuse"

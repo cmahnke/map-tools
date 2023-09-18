@@ -1,0 +1,8 @@
+commands:
+  tilemaker:
+    cmd: "/opt/tilemaker/bin/tilemaker"
+    opts: "--config ../tilemaker-config/config.json --process ../tilemaker-config/process.lua"
+#    opts: "--config ./config.json --process ./process.lua --store ./tmp/swap"
+  osmium:
+    cmd: /opt/osmium/bin/osmium tags-filter
+    opts: "-O --fsync"

@@ -33,3 +33,11 @@ updates:
     directory: "/docker/osmium/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/docker/data/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/docker/data/"
+    schedule:
+      interval: "daily"
