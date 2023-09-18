@@ -91,7 +91,7 @@ def get_datasets():
                 else:
                     run_external_with_logger(dataset.postprocess, logger, target)
                 if not config.keep:
-                    target.unlink(missing_ok=True)
+                    shutil.rmtree(target)
             if not config.keep:
                 dest.unlink(missing_ok=True)
         else:
