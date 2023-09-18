@@ -60,33 +60,33 @@ jobs:
           tags: |
             ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
 
-    test:
-      name: Test Ubuntu Docker images for linking errors
-      runs-on: ubuntu-latest
-      needs: [build_osmium, build_tilemaker]
-      steps:
-        - name: Extract
-          run: |
-            sudo chmod +w /opt
-            docker pull ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
-            docker create --name osmium ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
-            docker cp osmium:/opt/osmium /opt/osmium
-            docker rm -f osmium
-            docker rmi ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+  test:
+    name: Test Ubuntu Docker images for linking errors
+    runs-on: ubuntu-latest
+    needs: [build_osmium, build_tilemaker]
+    steps:
+      - name: Extract
+        run: |
+          sudo chmod +w /opt
+          docker pull ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+          docker create --name osmium ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+          docker cp osmium:/opt/osmium /opt/osmium
+          docker rm -f osmium
+          docker rmi ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
 
-            docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
-            docker create --name tilemaker ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
-            docker cp osmium:/opt/tilemaker /opt/tilemaker
-            docker rm -f tilemaker
-            docker rmi docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker create --name tilemaker ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker cp osmium:/opt/tilemaker /opt/tilemaker
+          docker rm -f tilemaker
+          docker rmi docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
 
-        - name: Install dependencies
-          run: |
-            sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
 
-        - name: Check ldd
-          run: |
-            for filepath in /opt/**/bin/*
-            do
-                ldd$filepath)
-            done
+      - name: Check ldd
+        run: |
+          for filepath in /opt/**/bin/*
+          do
+              ldd$filepath)
+          done
