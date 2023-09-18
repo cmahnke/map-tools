@@ -82,7 +82,7 @@ jobs:
           docker create --name tilemaker ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
           docker cp tilemaker:/opt/tilemaker /opt/tilemaker
           docker rm -f tilemaker
-          docker rmi docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker rmi ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
 
       - name: Check ldd
         run: |
