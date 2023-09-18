@@ -2,8 +2,7 @@
 
 FROM maven:3-eclipse-temurin-17-focal AS builder
 
-ENV BUILD_DEPS="git maven gcompat libc6-compat" \
-    BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
+ENV BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
     BAREMAPS_TAG="main" \
     BUILD_DIR=/tmp/build
 
@@ -18,7 +17,7 @@ FROM alpine:3.18
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-ENV RUN_DEPS="openjdk17-jre openjdk17-jre-headless" \
+ENV RUN_DEPS="openjdk17-jre-headless" \
     BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 
