@@ -1,0 +1,60 @@
+name: Publish Data
+on:
+  workflow_run:
+    workflows: ["Publish Ubuntu Docker images"]
+    branches: [main]
+    types:
+      - completed
+  schedule:
+    - cron:  '30 4 * * 1'
+
+jobs:
+  build_central-europe:
+    name: Push central-europe Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Login to GitHub Packages Docker Registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+          logout: false
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
+          pip -r install -r docker/data/requirements.txt
+
+      - name: Extract
+        run: |
+          sudo chmod +w /opt
+          docker pull ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+          docker create --name osmium ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+          docker cp osmium:/opt/osmium /opt/osmium
+          docker rm -f osmium
+          docker rmi ghcr.io/cmahnke/map-action/osmium:ubuntu-22.04
+
+          docker pull ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker create --name tilemaker ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+          docker cp tilemaker:/opt/tilemaker /opt/tilemaker
+          docker rm -f tilemaker
+          docker rmi ghcr.io/cmahnke/map-action/tilemaker:ubuntu-22.04
+
+      - name: Generate tiles
+        run: |
+          cd docker/data/scripts
+          python mktiles.py -v -k -i -c mktiles.yaml -c mktiles-github.yaml -u ../coverages/central-europe.json
+          cd ../../..
+          tar -cvjf tiles.tar.bz2 script/tmp/tiles
+
+      - name: Upload tiles
+        uses: actions/upload-artifact@v3
+        with:
+          name: tiles-central-europe
+          path: tiles.tar.bz2

@@ -23,7 +23,7 @@ RUN --mount=target=/mnt/build-context \
     python $BUILD_DIR/scripts/mktiles.py -i -v -c $BUILD_DIR/scripts/mktiles.yaml -c $BUILD_DIR/scripts/mktiles-github.yaml -u $BUILD_DIR/coverages/${COVERAGE}
 
 # Restart from an empty image to get rid of layers
-FROM alpine:3.18
+FROM scratch
 
 ENV DATA_DIR=/data
 
