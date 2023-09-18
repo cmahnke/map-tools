@@ -86,7 +86,7 @@ jobs:
 
       - name: Check ldd
         run: |
-          for filepath in /opt/**/bin/*
+          for filepath in /opt/{tilemaker,osmium}/bin/*
           do
             echo "Checking $filepath"
             ldd $filepath
