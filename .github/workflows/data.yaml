@@ -28,7 +28,7 @@ jobs:
           logout: false
       - name: Install dependencies
         run: |
-          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
+          sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5 gdal-bin
           pip install -r docker/data/requirements.txt
 
       - name: Extract
@@ -49,7 +49,7 @@ jobs:
       - name: Generate tiles
         run: |
           cd docker/data/scripts
-          python mktiles.py -v -k -i -c mktiles.yaml -c mktiles-github.yaml -u ../coverages/central-europe.json
+          python mktiles.py -v -i -c mktiles.yaml -c mktiles-github.yaml -u ../coverages/central-europe.json
           cd ../../..
           tar -cvjf tiles.tar.bz2 script/tmp/tiles
 
