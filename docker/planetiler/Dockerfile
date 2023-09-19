@@ -2,7 +2,7 @@
 
 FROM maven:3-eclipse-temurin-17-focal AS builder
 
-ARGS PLANETILER_TAG=v0.6.0
+ARG PLANETILER_TAG=v0.6.0
 
 ENV BUILD_DEPS="git" \
     BUILD_DIR=/tmp/build \
