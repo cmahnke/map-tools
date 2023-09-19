@@ -137,7 +137,6 @@ def merge(urls):
                 else :
                     in_file.rename(str(infile) + f".{i}")
                 logger.debug(f"Size of result file {out_file} is {os.path.getsize(out_file)}")
-                logger.debug(f"{urls[i]}->{urls[-1]}")
                 if urls[i] != urls[-1]:
                     out_file.rename(in_file)
                     previous = in_file
