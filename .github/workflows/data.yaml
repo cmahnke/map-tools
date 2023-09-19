@@ -1,10 +1,13 @@
 name: Publish Data
 on:
-  workflow_run:
-    workflows: ["Publish Ubuntu Docker images"]
-    branches: [main]
-    types:
-      - completed
+#  workflow_run:
+#    workflows: ["Publish Ubuntu Docker images"]
+#    branches: [main]
+#    types:
+#      - completed
+  push:
+    branches:
+      - main
   schedule:
     - cron:  '30 4 * * 1'
 
@@ -32,6 +35,6 @@ jobs:
         with:
           push: true
           context: .
-          file: docker/osmium/Dockerfile
+          file: docker/data/Dockerfile
           tags: |
             ghcr.io/cmahnke/map-action/data/central-europe:latest
