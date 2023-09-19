@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-17-focal AS builder
+FROM maven:3-eclipse-temurin-19-focal AS builder
 
 ARG PLANETILER_TAG=v0.6.0
 
