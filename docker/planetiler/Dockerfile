@@ -2,10 +2,11 @@
 
 FROM maven:3-eclipse-temurin-17-focal AS builder
 
+ARGS PLANETILER_TAG=v0.6.0
+
 ENV BUILD_DEPS="git" \
     BUILD_DIR=/tmp/build \
     PLANETILER_GIT_URL=https://github.com/onthegomap/planetiler.git \
-    PLANETILER_TAG=v0.6.0 \
     PLANETILER_DIR=/opt/planetiler
 
 RUN mkdir -p $BUILD_DIR $PLANETILER_DIR && \
@@ -29,7 +30,7 @@ COPY --from=builder $PLANETILER_DIR/*with-deps.jar $PLANETILER_DIR/
 RUN apk --update upgrade && \
     apk add --no-cache $RUN_DEPS && \
     mkdir -p $PLANETILER_DIR/bin && \
-    printf "#!/bin/sh\njava -jar /opt/planetiler/planetiler*-with-deps.jar" > /opt/planetiler/bin/planetiler && \
+    printf "#!/bin/sh\njava -Xmx2g -jar /opt/planetiler/planetiler*-with-deps.jar" > /opt/planetiler/bin/planetiler && \
     chmod +x /opt/planetiler/bin/planetiler && \
     export PATH=$PATH:$PLANETILER_DIR/bin && \
 # Cleanup
