@@ -1,0 +1,8 @@
+{
+  "urls": [
+    "https://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf",
+    "https://download.geofabrik.de/europe/luxembourg-latest.osm.pbf",
+    "https://download.geofabrik.de/europe/faroe-islands-latest.osm.pbf",
+    "https://download.geofabrik.de/europe/isle-of-man-latest.osm.pbf"
+  ]
+}

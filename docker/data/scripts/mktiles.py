@@ -87,7 +87,8 @@ def get_datasets():
                     zip.extract(zip_info, target)
             if "postprocess" in dataset and dataset.postprocess != "":
                 if isinstance(dataset.postprocess, list):
-                    raise NotImplementedError("List processing not implemented yet!")
+                    for pp in dataset.postprocess:
+                        run_external_with_logger(pp, logger, target)
                 else:
                     run_external_with_logger(dataset.postprocess, logger, target)
                 if not config.keep:
@@ -111,6 +112,52 @@ def run_external_with_logger(cmd, log, input = ''):
     if ret:
         raise subprocess.CalledProcessError(ret, cmd)
 
+def merge(urls):
+    global logger, config
+    previous = ''
+    out_file = Path(config.directories.work).joinpath('output.osm.pbf')
+    in_file = Path(config.directories.work).joinpath('input.osm.pbf')
+    dest = [];
+    for i in range(len(urls)):
+        url = urls[i]
+        filename = Path(urlparse(url).path).name
+        prefix = config.directories.download
+        dest.append(Path(prefix).joinpath(filename))
+        dest[i].parent.mkdir(parents=True, exist_ok=True)
+        download(url, dest[i])
+        if previous != '':
+            if urls[i] == urls[-1]:
+                out_file = Path(config.commands.osmium.merge.path)
+                logger.debug(f"Writing last file to {out_file}, {config.commands.osmium.merge.path}")
+            cmd = ' '.join([config.commands.osmium.merge.cmd, config.commands.osmium.merge.opts, f"{previous} {dest[i]} -o {out_file}"])
+            try:
+                run_external_with_logger(cmd, logger)
+                if not config.keep:
+                    in_file.unlink(missing_ok=True)
+                else :
+                    in_file.rename(str(infile) + f".{i}")
+                logger.debug(f"Size of result file {out_file} is {os.path.getsize(out_file)}")
+                logger.debug(f"{urls[i]}->{urls[-1]}")
+                if urls[i] != urls[-1]:
+                    out_file.rename(in_file)
+                    previous = in_file
+            except subprocess.CalledProcessError as cpe:
+                logger.error(f"Failed to run {cpe.cmd}")
+                raise cpe
+            except FileNotFoundError as fnfe:
+                logger.error(f"Can't find result file {out_file}")
+                raise fnfe
+            if not config.keep:
+                dest[i-1].unlink()
+                if urls[i] == urls[-1]:
+                    dest[i].unlink()
+
+        previous = dest[i]
+
+        if not config.keep:
+            if len(dest) > 2:
+                dest[i-2].unlink(missing_ok=True)
+
 def process(urls):
     global logger, config
     for url in urls:
@@ -127,7 +174,7 @@ def process(urls):
             name = re.search(r'(?P<stem>.*?)(?P<suffix>\..*)', dest.name)
             layerfile = dest.parent.joinpath(f"{name.group('stem')}-{layer}{name.group('suffix')}")
             logger.debug(f"Splitting out {layer} from {dest} into {layerfile}")
-            cmd = ' '.join([config.commands.osmium.cmd, config.commands.osmium.opts, f"-o {layerfile} {dest} {filter}"])
+            cmd = ' '.join([config.commands.osmium.filter.cmd, config.commands.osmium.filter.opts, f"-o {layerfile} {dest} {filter}"])
             try:
                 run_external_with_logger(cmd, logger)
                 logger.debug(f"Size of result file is {os.path.getsize(layerfile)}")
@@ -144,7 +191,8 @@ def process(urls):
                 run_external_with_logger(cmd, logger)
                 if "postprocess" in config.commands.tilemaker and config.commands.tilemaker.postprocess != "":
                     if isinstance(config.commands.tilemaker.postprocess, list):
-                        raise NotImplementedError("List processing not implemented yet!")
+                        for pp in dataset.postprocess:
+                            run_external_with_logger(pp, logger, target)
                     else:
                         run_external_with_logger(config.commands.tilemaker.post, logger)
             except subprocess.CalledProcessError as cpe:
@@ -167,6 +215,9 @@ def main():
     parser.add_argument('-k', '--keep', action='store_true', default=False, help='Keep downloaded files')
     parser.add_argument('-u', '--urls', type=argparse.FileType('r'), required=True, help="URL file to be used")
     parser.add_argument('-c', '--config', type=argparse.FileType('r'), action='append', required=True, help="Configuration file to be used")
+    parser.add_argument('--print-cmd', action='store_true', default=False, help='Print command for Planetiler')
+    parser.add_argument('-m', '--merge', action='store_true', default=False, help='Merge only')
+    parser.add_argument('-d', '--dump', action='store_true', default=False, help='List included regions')
 
     args = parser.parse_args()
     if args.verbose:
@@ -187,7 +238,18 @@ def main():
     if logging.DEBUG >= logger.level:
         logger.debug(f"Config is {config}")
 
-    process(urls)
+    if args.dump:
+        for url in urls:
+            name = re.search(r'.*?geofabrik.de/(?P<region>.*)/(?P<subregion>.*?)-latest.osm.pbf', url)
+            logger.info(f"Included {name.group('region')} -> {name.group('subregion')}")
+
+    if args.print_cmd and config.commands['planetiler']:
+        print(f"java -Xmx{config.commands.planetiler.memory} -jar {config.commands.planetiler.jar} {config.commands.planetiler.opts} --osm-path={config.datasets.merge.path}")
+
+    if args.merge:
+        merge(urls)
+    else:
+        process(urls)
 
 if __name__ == "__main__":
     main()

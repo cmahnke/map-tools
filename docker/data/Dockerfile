@@ -1,18 +1,22 @@
 # syntax=docker/dockerfile:experimental
 
+FROM ghcr.io/cmahnke/map-action/planetiler:latest AS planetiler
 FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
-FROM ghcr.io/cmahnke/map-action/tilemaker:latest AS tilemaker
 
 FROM alpine:3.18 as builder
 
-COPY --from=osmium /opt/osmium /opt/osmium
-COPY --from=tilemaker /opt/tilemaker /opt/tilemaker
-
 ARG COVERAGE=central-europe.json
+#tile_compression=gzip (the tile compression, one of [none, gzip])
+ARG TILE_COMPRESSION=gzip
+# Either 'files' otherwise mbtiles
+ARG FORMAT=files
 
-ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests gdal-tools expat gdal libbz2 zlib boost1.82-program_options lz4-libs geos boost1.82-filesystem boost1.82-iostreams protobuf lua5.1-libs" \
+ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data
+
+COPY --from=planetiler /opt/planetiler /opt/planetiler
+COPY --from=osmium /opt/osmium /opt/osmium
 
 RUN --mount=target=/mnt/build-context \
     apk --update upgrade &&\
@@ -20,14 +24,31 @@ RUN --mount=target=/mnt/build-context \
     mkdir -p $BUILD_DIR $DATA_DIR && \
     cp -r /mnt/build-context/docker/data/* $BUILD_DIR && \
     pip install -r $BUILD_DIR/requirements.txt && \
-    python $BUILD_DIR/scripts/mktiles.py -i -v -c $BUILD_DIR/scripts/mktiles.yaml -c $BUILD_DIR/scripts/mktiles-github.yaml -u $BUILD_DIR/coverages/${COVERAGE}
+    cd $BUILD_DIR/scripts && mkdir -p data/sources/ && \
+    ./mktiles.py --print-cmd -v -m -i -c mktiles-docker.yaml -u ../coverages/${COVERAGE} && \
+    mv ./coastline ./water-polygons-split-3857 && \
+    zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
+    mv water-polygons-split-3857.zip data/sources/  && \
+    rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
+    mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
+    cd $BUILD_DIR/ && \
+    mv $BUILD_DIR/scripts/data . && \
+    java -Xmx2g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} && \
+    if test "${FORMAT}" = 'files' ; then \
+      /usr/bin/mb-util --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
+    else \
+      mv data/output.mbtiles $DATA_DIR/tiles.mbtiles ; \
+    fi && \
+# Cleanup
+    cd / && rm -rf $BUILD_DIR && \
+    apk del $BUILD_DEPS
 
 # Restart from an empty image to get rid of layers
-FROM scratch
+#FROM scratch
 
-ENV DATA_DIR=/data
+#ENV DATA_DIR=/data
 
-LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+#LABEL maintainer="cmahnke@gmail.com"
+#LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-COPY --from=builder $DATA_DIR $DATA_DIR
+#COPY --from=builder $DATA_DIR $DATA_DIR

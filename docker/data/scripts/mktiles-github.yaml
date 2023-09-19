@@ -5,5 +5,17 @@ commands:
 #    opts: "--config ./config.json --process ./process.lua --store ./tmp/swap"
     postprocess: "rm -rf ./tmp/swap/*"
   osmium:
-    cmd: /opt/osmium/bin/osmium tags-filter
-    opts: "-O --fsync"
+    filter:
+      cmd: /opt/osmium/bin/osmium tags-filter
+      opts: "-O --fsync"
+    merge:
+      cmd: osmium merge
+      opts: "-O --fsync"
+      path: ./merged.osm.pbf
+  planetiler:
+    memory: 2g
+    jar: "/opt/planetiler/planetiler-*-with-deps.jar"
+#free_water_polygons_after_read=true
+#free_natural_earth_after_read=true
+#free_osm_after_read=false
+    opts: "--download=false --languages=de,en --water_polygons_path=./coastline/water_polygons.shp --use_wikidata=false"
