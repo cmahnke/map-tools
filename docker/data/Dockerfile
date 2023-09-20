@@ -35,7 +35,7 @@ RUN --mount=target=/mnt/build-context \
     mv water-polygons-split-3857.zip data/sources/  && \
     rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
     export BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
-    osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}.osm.pbf && \
+    /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}.osm.pbf && \
     #mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
     rm -f ./tmp/merged.osm.pbf && \
     cd $BUILD_DIR/ && \
