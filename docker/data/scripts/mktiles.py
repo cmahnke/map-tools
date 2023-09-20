@@ -150,8 +150,8 @@ def merge(urls):
                 dest[i-1].unlink()
                 if urls[i] == urls[-1]:
                     dest[i].unlink()
-
-        previous = dest[i]
+        else:
+            previous = dest[i]
 
         if not config.keep:
             if len(dest) > 2:
