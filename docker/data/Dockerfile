@@ -10,6 +10,8 @@ ARG COVERAGE=central-europe.json
 ARG TILE_COMPRESSION=gzip
 # Either 'files' otherwise mbtiles
 ARG FORMAT=files
+# Use this to reduce maximum zoom level
+MAX_ZOOM=14
 
 ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip" \
     BUILD_DIR=/tmp/build \
@@ -33,7 +35,7 @@ RUN --mount=target=/mnt/build-context \
     mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
     cd $BUILD_DIR/ && \
     mv $BUILD_DIR/scripts/data . && \
-    java -Xmx2g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} && \
+    java -Xmx2g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} && \
     if test "${FORMAT}" = 'files' ; then \
       /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \
