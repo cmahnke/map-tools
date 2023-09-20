@@ -40,6 +40,8 @@ jobs:
           push: true
           context: .
           file: docker/data/Dockerfile
+          build-args: |
+            MAX_ZOOM=13
           tags: |
             ghcr.io/cmahnke/map-action/data/central-europe:latest
 
@@ -73,5 +75,6 @@ jobs:
           file: docker/data/Dockerfile
           build-args: |
             COVERAGE=central-europe-ext.json
+            MAX_ZOOM=13
           tags: |
             ghcr.io/cmahnke/map-action/data/central-europe-ext:latest
