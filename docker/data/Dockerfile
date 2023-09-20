@@ -15,7 +15,7 @@ ARG MAX_ZOOM=14
 #Exclude layers
 ARG EXCLUDE_LAYERS=housenumber,aeroway,aerodrome_label
 
-ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip" \
+ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data
 
@@ -34,10 +34,13 @@ RUN --mount=target=/mnt/build-context \
     zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
     mv water-polygons-split-3857.zip data/sources/  && \
     rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
-    mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
+    export BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
+    osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}.osm.pbf && \
+    #mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
+    rm -f ./tmp/merged.osm.pbf && \
     cd $BUILD_DIR/ && \
     mv $BUILD_DIR/scripts/data . && \
-    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} && \
+    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} --bounds=${BBOX} && \
     if test "${FORMAT}" = 'files' ; then \
       /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \

@@ -6,3 +6,4 @@ core
 merged.osm.pbf
 lake_centerline
 natural_earth_vector
+planetiler-*-with-deps.jar

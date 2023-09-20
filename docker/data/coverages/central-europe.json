@@ -13,6 +13,7 @@
     "https://download.geofabrik.de/europe/poland-latest.osm.pbf"
   ],
   "config": {
-    "datasets.costlines.postprocess": "ogr2ogr -f 'ESRI Shapefile' -spat 1.34 42.59 25.13 57.95 ./coastline/water_polygons.shp {input_dir}/water_polygons.shp"
-  }
+    "datasets.costlines.postprocess": "ogr2ogr -f 'ESRI Shapefile' -spat 1.32 42.59 26.66 58.40 ./coastline/water_polygons.shp {input_dir}/water_polygons.shp"
+  },
+  "bbox": "1.32 42.59 26.66 58.40"
 }
