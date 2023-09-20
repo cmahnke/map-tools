@@ -35,7 +35,7 @@ RUN --mount=target=/mnt/build-context \
     mv $BUILD_DIR/scripts/data . && \
     java -Xmx2g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} && \
     if test "${FORMAT}" = 'files' ; then \
-      /usr/bin/mb-util --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
+      /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \
       mv data/output.mbtiles $DATA_DIR/tiles.mbtiles ; \
     fi && \
@@ -44,11 +44,11 @@ RUN --mount=target=/mnt/build-context \
     apk del $BUILD_DEPS
 
 # Restart from an empty image to get rid of layers
-#FROM scratch
+FROM scratch
 
-#ENV DATA_DIR=/data
+ENV DATA_DIR=/data
 
-#LABEL maintainer="cmahnke@gmail.com"
-#LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL maintainer="cmahnke@gmail.com"
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
-#COPY --from=builder $DATA_DIR $DATA_DIR
+COPY --from=builder $DATA_DIR $DATA_DIR

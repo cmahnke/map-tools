@@ -41,6 +41,8 @@ updates:
     directory: "/docker/planetiler/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
   - package-ecosystem: "pip"
     directory: "/docker/data/"
     schedule:
