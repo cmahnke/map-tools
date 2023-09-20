@@ -23,9 +23,9 @@ COPY --from=planetiler /opt/planetiler /opt/planetiler
 COPY --from=osmium /opt/osmium /opt/osmium
 
 RUN --mount=target=/mnt/build-context \
-    apk --update upgrade &&\
+    apk --update upgrade && \
     apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
-    mkdir -p $BUILD_DIR $DATA_DIR && \
+    mkdir -p $BUILD_DIR $DATA_DIR $BUILD_DIRdata/output/ && \
     cp -r /mnt/build-context/docker/data/* $BUILD_DIR && \
     pip install -r $BUILD_DIR/requirements.txt && \
     cd $BUILD_DIR/scripts && mkdir -p data/sources/ && \
@@ -35,12 +35,14 @@ RUN --mount=target=/mnt/build-context \
     mv water-polygons-split-3857.zip data/sources/  && \
     rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
     export BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
-    /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}.osm.pbf && \
+    /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}-bb.osm.pbf && \
     #mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
     rm -f ./tmp/merged.osm.pbf && \
+    /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf data/sources/${COVERAGE}-bb.osm.pbf a/building && \
+    rm -f data/sources/${COVERAGE}-bb.osm.pbf && \
     cd $BUILD_DIR/ && \
     mv $BUILD_DIR/scripts/data . && \
-    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} --bounds=${BBOX} && \
+    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} --bounds=${BBOX} --output=data/output/ && \
     if test "${FORMAT}" = 'files' ; then \
       /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \
