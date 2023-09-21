@@ -40,7 +40,7 @@ RUN --mount=target=/mnt/build-context \
       PLANETILER_OPTS="--bounds=${BBOX}" ; \
       /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=./tmp/merged-bb.osm.pbf && \
       rm -f ./tmp/merged.osm.pbf && \
-      echo "[`echo $BBOX |tr ' ' ','`]" > DATA_DIR/bbox.json && \
+      echo "[`echo $BBOX |tr ' ' ','`]" > $DATA_DIR/bbox.json && \
       mv ./tmp/merged-bb.osm.pbf ./tmp/merged.osm.pbf ; \
     else \
       PLANETILER_OPTS="" ; \
