@@ -6,12 +6,13 @@ FROM alpine:3.12
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 
+ARG OSMOSIS_TAG=0.48.3
+
 ENV BUILD_DEPS="git gradle curl libxml2-utils" \
     RUN_DEPS="openjdk8-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
-    OSMOSIS_TAG=0.48.3 \
     MAP_FILE_NAME=map.osm
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories && \

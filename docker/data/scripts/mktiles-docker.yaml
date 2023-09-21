@@ -1,10 +1,8 @@
 datasets:
   costlines:
     url: https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip
-#    url: https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip
     path: ./coastline/
     postprocess:
-#      - ogr2ogr -f 'ESRI Shapefile' -spat 1.34 42.59 25.13 57.95 ./coastline/water_polygons.shp {input_dir}/water_polygons.shp
       - mv ./coastline.tmp/water-polygons-split-3857.zip data/sources/
       - rm -rf ./coastline/
   lake_centerline:
@@ -30,7 +28,7 @@ commands:
       opts: "-O --fsync"
       path: ./tmp/merged.osm.pbf
   planetiler:
-    memory: 2g
+    memory: 4g
     jar: "/opt/planetiler/planetiler-*-with-deps.jar"
 #--free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true
     opts: "--download=false --languages=de,en --water_polygons_path=./coastline/water_polygons.shp --use_wikidata=false"
