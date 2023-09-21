@@ -1,8 +1,6 @@
 name: Publish Ubuntu Docker images
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
 
