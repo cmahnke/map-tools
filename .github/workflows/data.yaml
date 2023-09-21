@@ -18,6 +18,7 @@ jobs:
     steps:
       - name: Free some disk space
         run: |
+          sudo apt-get update
           sudo apt-get remove -y '^dotnet-.*'
           sudo apt-get remove -y '^llvm-.*'
           sudo apt-get remove -y 'php.*'
@@ -59,6 +60,7 @@ jobs:
     steps:
       - name: Free some disk space
         run: |
+          sudo apt-get update
           sudo apt-get remove -y '^dotnet-.*'
           sudo apt-get remove -y '^llvm-.*'
           sudo apt-get remove -y 'php.*'
