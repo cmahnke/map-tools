@@ -34,26 +34,33 @@ RUN --mount=target=/mnt/build-context \
     zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
     mv water-polygons-split-3857.zip data/sources/  && \
     rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
-    export BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
-    /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=data/sources/${COVERAGE}-bb.osm.pbf && \
-    #mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf && \
+    BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
+    if test "${BBOX}" != '' && test "${BBOX}" != 'null' ; then \
+      PLANETILER_OPTS="--bounds=${BBOX}" ; \
+      /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=./tmp/merged-bb.osm.pbf && \
+      rm -f ./tmp/merged.osm.pbf && \
+      mv ./tmp/merged-bb.osm.pbf ./tmp/merged.osm.pbf ; \
+    else \
+      PLANETILER_OPTS="" ; \
+    fi && \
+    /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf ./tmp/merged.osm.pbf a/building && \
     rm -f ./tmp/merged.osm.pbf && \
-    /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf data/sources/${COVERAGE}-bb.osm.pbf a/building && \
-    rm -f data/sources/${COVERAGE}-bb.osm.pbf && \
     cd $BUILD_DIR/ && \
     mv $BUILD_DIR/scripts/data . && \
-    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} --bounds=${BBOX} --output=data/output/ && \
+    java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} $PLANETILER_OPTS  && \
+    rm -rf /opt && \
     if test "${FORMAT}" = 'files' ; then \
-      /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
+      /usr/bin/mb-util --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \
       mv data/output.mbtiles $DATA_DIR/tiles.mbtiles ; \
     fi && \
 # Cleanup
-    cd / && rm -rf $BUILD_DIR && \
+    cd / && rm -rf $BUILD_DIR /tmp/GeoTools && \
     apk del $BUILD_DEPS
 
 # Restart from an empty image to get rid of layers
-FROM scratch
+#FROM scratch
+FROM alpine:3.18
 
 ENV DATA_DIR=/data
 
