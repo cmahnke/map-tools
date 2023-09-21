@@ -14,6 +14,8 @@ ARG FORMAT=files
 ARG MAX_ZOOM=14
 #Exclude layers
 ARG EXCLUDE_LAYERS=housenumber,aeroway,aerodrome_label
+# Filter buildings
+ARG FILTER_BUILDINGS=true
 
 ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
     BUILD_DIR=/tmp/build \
@@ -45,8 +47,12 @@ RUN --mount=target=/mnt/build-context \
     else \
       PLANETILER_OPTS="" ; \
     fi && \
-    /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf ./tmp/merged.osm.pbf a/building && \
-    rm -f ./tmp/merged.osm.pbf && \
+    if test "$FILTER_BUILDINGS" == 'true' ; then \
+      /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf ./tmp/merged.osm.pbf a/building && \
+      rm -f ./tmp/merged.osm.pbf ; \
+    else \
+      mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf ; \
+    fi && \
     cd $BUILD_DIR/ && \
     mv $BUILD_DIR/scripts/data . && \
     java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} $PLANETILER_OPTS  && \
