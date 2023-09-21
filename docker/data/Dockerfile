@@ -39,6 +39,7 @@ RUN --mount=target=/mnt/build-context \
       PLANETILER_OPTS="--bounds=${BBOX}" ; \
       /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=./tmp/merged-bb.osm.pbf && \
       rm -f ./tmp/merged.osm.pbf && \
+      echo "[`echo $BBOX | tr ' ' ','`]" > DATA_DIR/bbox.json && \
       mv ./tmp/merged-bb.osm.pbf ./tmp/merged.osm.pbf ; \
     else \
       PLANETILER_OPTS="" ; \
@@ -50,7 +51,7 @@ RUN --mount=target=/mnt/build-context \
     java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} $PLANETILER_OPTS  && \
     rm -rf /opt && \
     if test "${FORMAT}" = 'files' ; then \
-      /usr/bin/mb-util --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
+      /usr/bin/mb-util --silent --image_format=pbf $BUILD_DIR/data/output.mbtiles $DATA_DIR/tiles ; \
     else \
       mv data/output.mbtiles $DATA_DIR/tiles.mbtiles ; \
     fi && \
