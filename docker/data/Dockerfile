@@ -30,16 +30,17 @@ RUN --mount=target=/mnt/build-context \
     pip install -r $BUILD_DIR/requirements.txt && \
     cd $BUILD_DIR/scripts && mkdir -p data/sources/ && \
     ./mktiles.py --print-cmd -v -m -i -c mktiles-docker.yaml -u ../coverages/${COVERAGE} && \
-    mv ./coastline ./water-polygons-split-3857 && \
-    zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
-    mv water-polygons-split-3857.zip data/sources/  && \
+    #mv ./coastline ./water-polygons-split-3857 && \
+    #zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
+    #mv water-polygons-split-3857.zip data/sources/  && \
+    #mv coastline.tmp/water-polygons-split-3857.zip data/sources/ && \
     rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
     BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
     if test "${BBOX}" != '' && test "${BBOX}" != 'null' ; then \
       PLANETILER_OPTS="--bounds=${BBOX}" ; \
       /opt/osmium/bin/osmium extract --bbox="$BBOX" ./tmp/merged.osm.pbf --output=./tmp/merged-bb.osm.pbf && \
       rm -f ./tmp/merged.osm.pbf && \
-      echo "[`echo $BBOX | tr ' ' ','`]" > DATA_DIR/bbox.json && \
+      echo "[`echo $BBOX |tr ' ' ','`]" > DATA_DIR/bbox.json && \
       mv ./tmp/merged-bb.osm.pbf ./tmp/merged.osm.pbf ; \
     else \
       PLANETILER_OPTS="" ; \
