@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/planetiler:latest AS planetiler
+FROM ghcr.io/cmahnke/map-action/planetiler:latest-data AS planetiler
 FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
 
 FROM alpine:3.18 as builder
@@ -22,6 +22,7 @@ ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gda
     DATA_DIR=/data
 
 COPY --from=planetiler /opt/planetiler /opt/planetiler
+COPY --from=planetiler /tmp/build /tmp/build
 COPY --from=osmium /opt/osmium /opt/osmium
 
 RUN --mount=target=/mnt/build-context \
@@ -31,12 +32,12 @@ RUN --mount=target=/mnt/build-context \
     cp -r /mnt/build-context/docker/data/* $BUILD_DIR && \
     pip install -r $BUILD_DIR/requirements.txt && \
     cd $BUILD_DIR/scripts && mkdir -p data/sources/ && \
-    ./mktiles.py --print-cmd -v -m -i -c mktiles-docker.yaml -u ../coverages/${COVERAGE} && \
-    #mv ./coastline ./water-polygons-split-3857 && \
-    #zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
-    #mv water-polygons-split-3857.zip data/sources/  && \
-    #mv coastline.tmp/water-polygons-split-3857.zip data/sources/ && \
-    rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
+    ./mktiles.py --print-cmd -v -m -c mktiles-docker.yaml -u ../coverages/${COVERAGE} && \
+    ##mv ./coastline ./water-polygons-split-3857 && \
+    ##zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
+    ##mv water-polygons-split-3857.zip data/sources/  && \
+    ##mv coastline.tmp/water-polygons-split-3857.zip data/sources/ && \
+    #rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
     BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
     if test "${BBOX}" != '' && test "${BBOX}" != 'null' ; then \
       PLANETILER_OPTS="--bounds=${BBOX}" ; \
