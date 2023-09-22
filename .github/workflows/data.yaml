@@ -20,6 +20,7 @@ jobs:
   build_central-europe:
     name: Push central-europe Docker image to GitHub Packages
     runs-on: ubuntu-latest
+    if: ${{ false }}
     steps:
       - name: Free some disk space
         run: |
