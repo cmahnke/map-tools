@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:experimental
+
+FROM ghcr.io/cmahnke/map-action/planetiler:latest
+
+LABEL maintainer="cmahnke@gmail.com"
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+
+ENV BUILD_DEPS="wget" \
+    BUILD_DIR=/tmp/build \
+
+RUN apk --update upgrade && \
+    apk add --no-cache $RUN_DEPS && \
+    mkdir -p $BUILD_DIR/data/sources/  && \
+    cd $BUILD_DIR/data/sources/ && \
+    wget https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip && \
+    wget https://dev.maptiler.download/geodata/omt/lake_centerline.shp.zip && \
+    wget && \
+
+## Cleanup
+    cd / && \
+    apk del $BUILD_DEPS && \
+    rm -rf /var/cache/apk/*
+
+WORKDIR $BUILD_DIR
