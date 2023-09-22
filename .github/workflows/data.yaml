@@ -163,7 +163,7 @@ jobs:
           tags: |
             ghcr.io/cmahnke/map-action/data/goettingen:latest
 
-  build_goettingen:
+  build_sylt:
     name: Push sylt Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
