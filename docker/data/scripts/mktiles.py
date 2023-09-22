@@ -156,6 +156,8 @@ def merge(urls):
         if not config.keep:
             if len(dest) > 2:
                 dest[i-2].unlink(missing_ok=True)
+    if len(urls) < 2:
+        dest[0].rename(Path(config.commands.osmium.merge.path))
 
 def process(urls):
     global logger, config
