@@ -25,16 +25,7 @@ jobs:
       - name: Free some disk space
         run: |
           df -h
-          sudo apt-get update
-          sudo apt-get remove -y '^dotnet-.*'
-          sudo apt-get remove -y '^llvm-.*'
-          sudo apt-get remove -y 'php.*'
-          sudo apt-get remove -y '^mongodb-.*'
-          sudo apt-get remove -y '^mysql-.*'
-          sudo apt-get remove -y '^postgresql-.*'
-          sudo apt-get remove -y '^gfortran-.*'
-          sudo apt-get remove -y '^cmake-.*'
-          sudo dpkg --remove azure-cli google-cloud-sdk google-chrome-stable firefox powershell
+          sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' '^postgresql-.*' '^gfortran-.*' '^cmake-.*' azure-cli google-cloud-sdk google-chrome-stable firefox powershell
           sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/graalvm/ /usr/local/share/powershell /usr/local/lib/android /usr/local/lib/node_modules /usr/local/.ghcup/ /usr/share/dotnet/
           sudo apt-get autoremove -y
           sudo apt-get clean
@@ -75,15 +66,7 @@ jobs:
         run: |
           df -h
           sudo apt-get update
-          sudo apt-get remove -y '^dotnet-.*'
-          sudo apt-get remove -y '^llvm-.*'
-          sudo apt-get remove -y 'php.*'
-          sudo apt-get remove -y '^mongodb-.*'
-          sudo apt-get remove -y '^mysql-.*'
-          sudo apt-get remove -y '^postgresql-.*'
-          sudo apt-get remove -y '^gfortran-.*'
-          sudo apt-get remove -y '^cmake-.*'
-          sudo dpkg --remove  azure-cli google-cloud-sdk google-chrome-stable firefox powershell
+          sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' '^postgresql-.*' '^gfortran-.*' '^cmake-.*' azure-cli google-cloud-sdk google-chrome-stable firefox powershell
           sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/graalvm/ /usr/local/share/powershell /usr/local/lib/android /usr/local/lib/node_modules /usr/local/.ghcup/ /usr/share/dotnet/
           sudo apt-get autoremove -y
           sudo apt-get clean
@@ -125,15 +108,7 @@ jobs:
         run: |
           df -h
           sudo apt-get update
-          sudo apt-get remove -y '^dotnet-.*'
-          sudo apt-get remove -y '^llvm-.*'
-          sudo apt-get remove -y 'php.*'
-          sudo apt-get remove -y '^mongodb-.*'
-          sudo apt-get remove -y '^mysql-.*'
-          sudo apt-get remove -y '^postgresql-.*'
-          sudo apt-get remove -y '^gfortran-.*'
-          sudo apt-get remove -y '^cmake-.*'
-          sudo dpkg --remove  azure-cli google-cloud-sdk google-chrome-stable firefox powershell
+          sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' '^postgresql-.*' '^gfortran-.*' '^cmake-.*' azure-cli google-cloud-sdk google-chrome-stable firefox powershell
           sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/graalvm/ /usr/local/share/powershell /usr/local/lib/android /usr/local/lib/node_modules /usr/local/.ghcup/ /usr/share/dotnet/
           sudo apt-get autoremove -y
           sudo apt-get clean
