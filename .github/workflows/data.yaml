@@ -5,11 +5,11 @@ permissions:
   contents: write
 
 on:
-#  workflow_run:
-#    workflows: ["Publish Ubuntu Docker images"]
-#    branches: [main]
-#    types:
-#      - completed
+  workflow_run:
+    workflows: ["Publish Docker images"]
+    branches: [main]
+    types:
+      - completed
   workflow_dispatch:
   schedule:
     - cron:  '30 4 * * 1'
