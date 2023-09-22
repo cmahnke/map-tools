@@ -1,4 +1,9 @@
 name: Publish Data
+
+permissions:
+  packages: write
+  contents: write
+
 on:
 #  workflow_run:
 #    workflows: ["Publish Ubuntu Docker images"]
