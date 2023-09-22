@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:experimental
 
-FROM alpine:3.18
+# Use v3.12, since higher versions include Gradle > 6.0 which doesn't ship the jdepended plugin
+FROM alpine:3.12
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
@@ -8,7 +9,7 @@ LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
 ARG OSMOSIS_TAG=0.48.3
 
 ENV BUILD_DEPS="git gradle curl libxml2-utils" \
-    RUN_DEPS="openjdk17-jre-headless" \
+    RUN_DEPS="openjdk8-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
@@ -21,14 +22,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut 
 # Install Osmosis
     cd $BUILD_DIR && \
     git clone $OSMOSIS_GIT_URL --branch $OSMOSIS_TAG --single-branch && \
-    cd osmosis/ && \
-    gradle build -x test && \
-    mkdir -p /opt/osmosis && \
-    cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis && \
-    cd /opt/osmosis && \
-    unzip osmosis-*.zip && \
-    mv osmosis-*/* . && \
-    rm -r osmosis-*/ *.zip && \
+    cd osmosis/package && \
+    gradle syncLibs && \
+#    rm -rf build/distibution && \
+    cd .. && mkdir -p /opt/osmosis && \
+    mv package/* /opt/osmosis && \
 # Cleanup
     cd / && rm -rf $BUILD_DIR /root/.gradle && \
     apk del $BUILD_DEPS && \

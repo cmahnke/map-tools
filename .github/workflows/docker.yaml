@@ -63,7 +63,7 @@ jobs:
           context: .
           build-args: |
             OSMOSIS_TAG=0.48.3
-          file: docker/osmosis/Dockerfile
+          file: docker/osmosis/Dockerfile.dist
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/cmahnke/map-action/osmosis:0.48.3
