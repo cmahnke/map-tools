@@ -33,11 +33,6 @@ RUN --mount=target=/mnt/build-context \
     pip install -r $BUILD_DIR/requirements.txt && \
     cd $BUILD_DIR/scripts && mkdir -p data/sources/ && \
     ./mktiles.py --print-cmd -v -m -c mktiles-docker.yaml -u ../coverages/${COVERAGE} && \
-    ##mv ./coastline ./water-polygons-split-3857 && \
-    ##zip -r water-polygons-split-3857.zip water-polygons-split-3857  && \
-    ##mv water-polygons-split-3857.zip data/sources/  && \
-    ##mv coastline.tmp/water-polygons-split-3857.zip data/sources/ && \
-    #rm -rf coastline coastline.tmp water-polygons-split-3857* landcover  && \
     BBOX=`jq -r .bbox ../coverages/${COVERAGE} | tr ' ' ','` && \
     if test "${BBOX}" != '' && test "${BBOX}" != 'null' ; then \
       PLANETILER_OPTS="--bounds=${BBOX}" ; \
@@ -59,7 +54,6 @@ RUN --mount=target=/mnt/build-context \
     mv data/sources/${COVERAGE}.osm.pbf $BUILD_DIR/data/sources/${COVERAGE}.osm.pbf && \
     cd $BUILD_DIR/ && \
     rm -rf $BUILD_DIR/scripts && \
-    #mv $BUILD_DIR/scripts/data . && \
     java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} $PLANETILER_OPTS  && \
     rm -rf /opt && \
     if test "${FORMAT}" = 'files' ; then \
