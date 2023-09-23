@@ -54,8 +54,10 @@ RUN --mount=target=/mnt/build-context \
     else \
       mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf ; \
     fi && \
+    mv $BUILD_DIR/scripts/data/sources/${COVERAGE}.osm.pbf $BUILD_DIR/data/sources/${COVERAGE}.osm.pbf . && \
+    rm -rf $BUILD_DIR/scripts && \
     cd $BUILD_DIR/ && \
-    mv $BUILD_DIR/scripts/data . && \
+    #mv $BUILD_DIR/scripts/data . && \
     java -Xmx4g -jar /opt/planetiler/planetiler-*-with-deps.jar --download=false --languages=de,en --use_wikidata=false --osm-path=data/sources/${COVERAGE}.osm.pbf --free_water_polygons_after_read=true --free_natural_earth_after_read=true --free_osm_after_read=true --free_lake_centerlines_after_read=true --gzip_temp=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} --exclude-layers=${EXCLUDE_LAYERS} $PLANETILER_OPTS  && \
     rm -rf /opt && \
     if test "${FORMAT}" = 'files' ; then \
