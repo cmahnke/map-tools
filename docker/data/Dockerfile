@@ -18,7 +18,7 @@ ARG EXCLUDE_LAYERS=housenumber,aeroway,aerodrome_label
 # Filter buildings
 ARG FILTER_BUILDINGS=true
 
-ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gdal-tools expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
+ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data
 

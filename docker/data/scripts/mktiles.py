@@ -113,6 +113,7 @@ def run_external_with_logger(cmd, log, input = ''):
         raise subprocess.CalledProcessError(ret, cmd)
 
 def merge(urls):
+    #TODO: Implement merge as a single command call
     global logger, config
     previous = ''
     out_file = Path(config.directories.work).joinpath('output.osm.pbf')

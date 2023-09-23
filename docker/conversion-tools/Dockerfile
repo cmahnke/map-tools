@@ -2,6 +2,7 @@
 
 FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
 FROM ghcr.io/cmahnke/map-action/tilemaker:latest AS tilemaker
+FROM ghcr.io/cmahnke/map-action/osmctools:latest AS osmctools
 
 FROM alpine:3.18
 
@@ -12,8 +13,6 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     RUN_DEPS="zlib sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf gdal gdal-tools lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
     TIPPECANOE_GIT_TAG="1.36.0" \
-    OSMCTOOLS_GIT_REPO="https://gitlab.com/osm-c-tools/osmctools.git" \
-    OSMCTOOLS_GIT_TAG="0.9" \
     NLOHMANN_JSON_GIT_REPO="https://github.com/nlohmann/json.git" \
     NLOHMANN_JSON_GIT_TAG="v3.11.2" \
     OSM2PGSQL_GIT_REPO="https://github.com/openstreetmap/osm2pgsql.git" \
@@ -22,6 +21,8 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
 
 COPY --from=osmium /opt/osmium /opt/osmium
 COPY --from=tilemaker /opt/tilemaker /opt/tilemaker
+COPY --from=osmctools /opt/osmctools /opt/osmctools
+COPY --from=osmctools /opt/osmfilter /opt/osmfilter
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
@@ -36,13 +37,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     git clone --depth 1 --branch $TIPPECANOE_GIT_TAG $TIPPECANOE_GIT_REPO && \
     cd tippecanoe && \
     PREFIX=/opt/tippecanoe make -j install && \
-    cd .. && \
-## OSM C Tools
-    git clone --depth 1 --branch $OSMCTOOLS_GIT_TAG $OSMCTOOLS_GIT_REPO && \
-    cd osmctools && \
-    autoreconf --install && \
-    ./configure --prefix=/opt/osmctools && \
-    make && make install && \
     cd .. && \
 # nlohmann/json
     git clone --depth 1 --branch $NLOHMANN_JSON_GIT_TAG $NLOHMANN_JSON_GIT_REPO && \
@@ -59,11 +53,12 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     cmake -DNLOHMANN_INCLUDE_DIR=/opt/osm2pgsql/include -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX:PATH=/opt/osm2pgsql .. && \
     make install && \
     cd / && \
-
 # Create links
     for filepath in /opt/**/bin/* ; do \
-        filename=$(basename $filepath) ; \
+      filename=$(basename $filepath) ; \
+      if ! test -e /usr/local/bin/$filename ; then \
         ln -s $filepath /usr/local/bin/$filename ; \
+      fi ; \
     done && \
 # Cleanup
     rm -rf $BUILD_DIR  && \
