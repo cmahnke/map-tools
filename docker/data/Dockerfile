@@ -54,7 +54,7 @@ RUN --mount=target=/mnt/build-context \
     else \
       mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf ; \
     fi && \
-    mv $BUILD_DIR/scripts/data/sources/${COVERAGE}.osm.pbf $BUILD_DIR/data/sources/${COVERAGE}.osm.pbf . && \
+    mv data/sources/${COVERAGE}.osm.pbf $BUILD_DIR/data/sources/${COVERAGE}.osm.pbf . && \
     rm -rf $BUILD_DIR/scripts && \
     cd $BUILD_DIR/ && \
     #mv $BUILD_DIR/scripts/data . && \
