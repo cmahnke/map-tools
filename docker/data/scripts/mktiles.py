@@ -157,7 +157,9 @@ def merge(urls):
             if len(dest) > 2:
                 dest[i-2].unlink(missing_ok=True)
     if len(urls) < 2:
-        dest[0].rename(Path(config.commands.osmium.merge.path))
+        target = Path(config.commands.osmium.merge.path)
+        logger.info(f"Just one file downloaded, renaming {dest[0]} to {target}")
+        dest[0].rename(target)
 
 def process(urls):
     global logger, config
