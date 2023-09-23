@@ -12,7 +12,7 @@ ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
     LIBOSMIUM_TAG="v2.19.0" \
     OSMIUM_TOOL_REPO=https://github.com/osmcode/osmium-tool \
-    OSMIUM_TOOL_TAG="v1.15.0" \
+    OSMIUM_TOOL_TAG="v1.16.0" \
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \
