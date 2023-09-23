@@ -10,6 +10,7 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     OSMCTOOLS_GIT_REPO="https://gitlab.com/osm-c-tools/osmctools.git" \
     OSMCTOOLS_GIT_TAG="0.9" \
     OSMFILTER=http://m.m.i24.cc/osmfilter.c \
+    OSMCONVERT=http://m.m.i24.cc/osmconvert.c \
     BUILD_DIR=/tmp/build
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
@@ -22,6 +23,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     wget -O - $OSMFILTER |cc -x c - -O3 -o osmfilter && \
     mkdir -p /opt/osmfilter/bin && \
     mv osmfilter /opt/osmfilter/bin/ && \
+    wget -O - $OSMCONVERT | cc -x c - -lz -O3 -o osmconvert && \
+    mkdir -p /opt/osmconvert/bin && \
+    mv osmconvert /opt/osmconvert/bin/ && \
 ## OSM C Tools
     git clone --depth 1 --branch $OSMCTOOLS_GIT_TAG $OSMCTOOLS_GIT_REPO && \
     cd osmctools && \

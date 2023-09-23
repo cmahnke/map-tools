@@ -23,6 +23,7 @@ COPY --from=osmium /opt/osmium /opt/osmium
 COPY --from=tilemaker /opt/tilemaker /opt/tilemaker
 COPY --from=osmctools /opt/osmctools /opt/osmctools
 COPY --from=osmctools /opt/osmfilter /opt/osmfilter
+COPY --from=osmctools /opt/osmconvert /opt/osmconvert
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
