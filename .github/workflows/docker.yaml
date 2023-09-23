@@ -302,7 +302,7 @@ jobs:
   build_data_builder:
     name: Push data-builder Docker image to GitHub Packages
     runs-on: ubuntu-latest
-    needs: [build_planetiler_data, build_osmium]
+    needs: [build_planetiler_data, build_osmium, build_osmosis_latest]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4

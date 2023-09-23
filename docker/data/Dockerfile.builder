@@ -2,6 +2,7 @@
 
 FROM ghcr.io/cmahnke/map-action/planetiler:latest-data AS planetiler
 FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-action/osmosis:latest AS osmosis
 
 FROM alpine:3.18 as builder
 
@@ -12,6 +13,8 @@ ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless gda
 COPY --from=planetiler /opt/planetiler /opt/planetiler
 COPY --from=planetiler /tmp/build /tmp/build
 COPY --from=osmium /opt/osmium /opt/osmium
+COPY --from=osmosis /opt/osmosis /opt/osmosis
+
 
 RUN --mount=target=/mnt/build-context \
     apk --update upgrade && \
