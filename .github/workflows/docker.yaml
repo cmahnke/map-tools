@@ -355,7 +355,7 @@ jobs:
         with:
           push: true
           context: .
-          file: docker/data/Dockerfile.builder
+          file: docker/databuilder/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/cmahnke/map-tools/data-builder:latest

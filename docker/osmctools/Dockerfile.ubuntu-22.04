@@ -5,25 +5,16 @@ FROM ubuntu:22.04
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="wget git make autoconf automake libexpat-dev g++ libprotobuf-dev zlib1g-dev" \
+ENV BUILD_DEPS="wget git make autoconf automake llvm g++ zlib1g-dev build-essential" \
     RUN_DEPS="zlib1g" \
     OSMCTOOLS_GIT_REPO="https://gitlab.com/osm-c-tools/osmctools.git" \
-    OSMCTOOLS_GIT_TAG="0.9" \
-    OSMFILTER=http://m.m.i24.cc/osmfilter.c \
-    OSMCONVERT=http://m.m.i24.cc/osmconvert.c \
+    OSMCTOOLS_GIT_TAG="master" \
     BUILD_DIR=/tmp/build
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $BUILD_DIR $DATA_DIR && \
-    export CC=clang CXX=clang++ && \
     cd $BUILD_DIR && \
-    wget -O - $OSMFILTER |cc -x c - -O3 -o osmfilter && \
-    mkdir -p /opt/osmfilter/bin && \
-    mv osmfilter /opt/osmfilter/bin/ && \
-    wget -O - $OSMCONVERT | cc -x c - -lz -O3 -o osmconvert && \
-    mkdir -p /opt/osmconvert/bin && \
-    mv osmconvert /opt/osmconvert/bin/ && \
 ## OSM C Tools
     git clone --depth 1 --branch $OSMCTOOLS_GIT_TAG $OSMCTOOLS_GIT_REPO && \
     cd osmctools && \

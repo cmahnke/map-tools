@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="git wget cmake make libtool map-tools libbz2-dev libsqlite3-dev liblua5.1-0-dev libboost-program-options-dev libboost-filesystem-dev libboost-iostreams-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev protobuf-compiler liblz4-dev libgeos-dev zlib1g-dev rapidjson-dev" \
+ENV BUILD_DEPS="git wget cmake make libtool libbz2-dev libsqlite3-dev liblua5.1-0-dev libboost-program-options-dev libboost-filesystem-dev libboost-iostreams-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev protobuf-compiler liblz4-dev libgeos-dev zlib1g-dev rapidjson-dev" \
     RUN_DEPS="liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 bash" \
     SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
     SHAPELIB_GIT_TAG="v1.5.0" \

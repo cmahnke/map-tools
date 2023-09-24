@@ -14,9 +14,7 @@ ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless exp
 COPY --from=planetiler /opt/planetiler /opt/planetiler
 COPY --from=planetiler /tmp/build /tmp/build
 COPY --from=osmium /opt/osmium /opt/osmium
-COPY --from=osmosis /opt/osmosis /opt/osmosis
-COPY --from=osmctools /opt/osmfilter /opt/osmfilter
-COPY --from=osmctools /opt/osmconvert /opt/osmconvert
+COPY --from=osmctools /opt/osmfilter /opt/osmctools
 
 RUN --mount=target=/mnt/build-context \
     apk --update upgrade && \
