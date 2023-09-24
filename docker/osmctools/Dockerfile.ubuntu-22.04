@@ -1,22 +1,20 @@
 # syntax=docker/dockerfile:experimental
 
-FROM alpine:3.18
+FROM ubuntu:22.04
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev expat-dev lz4-dev gettext-dev protoc protobuf-dev" \
-    RUN_DEPS="zlib protobuf" \
+ENV BUILD_DEPS="wget git make autoconf automake libexpat-dev g++ libprotobuf-dev zlib1g-dev" \
+    RUN_DEPS="zlib1g" \
     OSMCTOOLS_GIT_REPO="https://gitlab.com/osm-c-tools/osmctools.git" \
     OSMCTOOLS_GIT_TAG="0.9" \
     OSMFILTER=http://m.m.i24.cc/osmfilter.c \
     OSMCONVERT=http://m.m.i24.cc/osmconvert.c \
     BUILD_DIR=/tmp/build
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk --update upgrade &&\
-    apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $BUILD_DIR $DATA_DIR && \
     export CC=clang CXX=clang++ && \
     cd $BUILD_DIR && \
@@ -41,6 +39,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
       fi ; \
     done && \
 # Cleanup
-    rm -rf $BUILD_DIR  && \
-    apk del $BUILD_DEPS && \
-    rm -rf /var/cache/apk/* /root/.cache
+    rm -rf $BUILD_DIR && \
+    apt-get remove -y $BUILD_DEPS && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/apt/lists/*

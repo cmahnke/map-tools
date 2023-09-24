@@ -3,7 +3,7 @@
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git wget cmake make libtool autoconf automake alpine-sdk zlib-dev sqlite-dev bzip2-dev lz4-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev bzip2-dev rapidjson-dev" \
     RUN_DEPS="zlib sqlite-libs bzip2 lz4-libs boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf lua5.1-libs bash" \

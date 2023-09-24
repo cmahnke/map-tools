@@ -3,7 +3,7 @@
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ARG OSMOSIS_TAG=0.48.3
 

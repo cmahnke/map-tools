@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/planetiler:latest
+FROM ghcr.io/cmahnke/map-tools/planetiler:latest
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="wget" \
     BUILD_DIR=/tmp/build

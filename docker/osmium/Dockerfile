@@ -3,7 +3,7 @@
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev" \
     RUN_DEPS="expat gdal libbz2 zlib boost1.82-program_options lz4-libs geos" \

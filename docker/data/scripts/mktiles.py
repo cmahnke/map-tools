@@ -52,6 +52,10 @@ def load_urls(filename, ignore_config=True):
 
 def download(url, dest):
     global logger
+    if dest.is_file():
+        size = int(requests.head(url).headers['Content-length'])
+        if size == dest.stat().st_size:
+            return
     logger.debug(f"Downloading {url} to {dest}")
     response = requests.get(url, stream=True)
     size = int(response.headers['Content-length'])

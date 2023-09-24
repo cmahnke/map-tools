@@ -39,7 +39,7 @@ jobs:
           file: docker/conversion-tools/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/conversions-tools:latest
+            ghcr.io/cmahnke/map-tools/conversions-tools:latest
 
   build_osmosis_release:
     name: Push osmosis Docker image to GitHub Packages
@@ -71,7 +71,7 @@ jobs:
           file: docker/osmosis/Dockerfile.dist
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/osmosis:0.48.3
+            ghcr.io/cmahnke/map-tools/osmosis:0.48.3
 
   build_osmosis_latest:
     name: Push osmosis Docker image to GitHub Packages
@@ -103,7 +103,7 @@ jobs:
           file: docker/osmosis/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/osmosis:latest
+            ghcr.io/cmahnke/map-tools/osmosis:latest
 
   build_mapsplit:
     name: Push mapsplit Docker image to GitHub Packages
@@ -133,7 +133,7 @@ jobs:
           file: docker/mapsplit/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/mapsplit:latest
+            ghcr.io/cmahnke/map-tools/mapsplit:latest
 
   build_planetiler:
     name: Push planetiler Docker image to GitHub Packages
@@ -163,7 +163,7 @@ jobs:
           file: docker/planetiler/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/planetiler:0.6.0
+            ghcr.io/cmahnke/map-tools/planetiler:0.6.0
       - name: Push latest Git version to GitHub Packages
         uses: docker/build-push-action@v5.0.0
         with:
@@ -174,7 +174,7 @@ jobs:
           build-args: |
             PLANETILER_TAG=main
           tags: |
-            ghcr.io/cmahnke/map-action/planetiler:latest
+            ghcr.io/cmahnke/map-tools/planetiler:latest
 
   build_planetiler_data:
     name: Push planetiler with data Docker image to GitHub Packages
@@ -207,7 +207,7 @@ jobs:
           build-args: |
             PLANETILER_TAG=main
           tags: |
-            ghcr.io/cmahnke/map-action/planetiler:latest-data
+            ghcr.io/cmahnke/map-tools/planetiler:latest-data
 
   build_baremaps:
     name: Push baremaps Docker image to GitHub Packages
@@ -237,7 +237,7 @@ jobs:
           file: docker/baremaps/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/baremaps:latest
+            ghcr.io/cmahnke/map-tools/baremaps:latest
 
   build_osmium:
     name: Push osmium Docker image to GitHub Packages
@@ -267,7 +267,7 @@ jobs:
           file: docker/osmium/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/osmium:latest
+            ghcr.io/cmahnke/map-tools/osmium:latest
 
   build_osmctools:
     name: Push osmctools Docker image to GitHub Packages
@@ -297,7 +297,7 @@ jobs:
           file: docker/osmctools/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/osmctools:latest
+            ghcr.io/cmahnke/map-tools/osmctools:latest
 
   build_tilemaker:
     name: Push tilemaker Docker image to GitHub Packages
@@ -327,12 +327,12 @@ jobs:
           file: docker/tilemaker/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/tilemaker:latest
+            ghcr.io/cmahnke/map-tools/tilemaker:latest
 
   build_data_builder:
     name: Push data-builder Docker image to GitHub Packages
     runs-on: ubuntu-latest
-    needs: [build_planetiler_data, build_osmium, build_osmosis_latest]
+    needs: [build_planetiler_data, build_osmium, build_osmosis_latest, build_osmctools]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -358,7 +358,7 @@ jobs:
           file: docker/data/Dockerfile.builder
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-action/data-builder:latest
+            ghcr.io/cmahnke/map-tools/data-builder:latest
 
 #  build_database:
 #    name: Push database Docker image to GitHub Packages
@@ -388,4 +388,4 @@ jobs:
 #          file: docker/database/Dockerfile
 #          platforms: linux/amd64,linux/arm64
 #          tags: |
-#            ghcr.io/cmahnke/map-action/database:latest
+#            ghcr.io/cmahnke/map-tools/database:latest

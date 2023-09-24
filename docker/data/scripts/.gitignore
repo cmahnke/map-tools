@@ -8,3 +8,9 @@ lake_centerline
 natural_earth_vector
 planetiler-*-with-deps.jar
 osmosis
+osmfilter
+osmconvert
+monaco*
+*.osm
+*.o5m
+*.pbf

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
-FROM ghcr.io/cmahnke/map-action/tilemaker:latest AS tilemaker
+FROM ghcr.io/cmahnke/map-tools/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-tools/tilemaker:latest AS tilemaker
 
 FROM alpine:3.18 as builder
 
@@ -28,6 +28,6 @@ FROM scratch
 ENV DATA_DIR=/data
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 COPY --from=builder $DATA_DIR $DATA_DIR

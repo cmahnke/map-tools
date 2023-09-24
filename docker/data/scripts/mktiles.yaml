@@ -24,7 +24,7 @@ directories:
   tiles: ./tmp/tiles
 commands:
   tilemaker:
-    cmd: "docker run -it -v {pwd.parent}/:{pwd.parent} -w {pwd} ghcr.io/cmahnke/map-action/tilemaker /opt/tilemaker/bin/tilemaker"
+    cmd: "docker run -it -v {pwd.parent}/:{pwd.parent} -w {pwd} ghcr.io/cmahnke/map-tools/tilemaker /opt/tilemaker/bin/tilemaker"
     opts: "--config ../tilemaker-config/config.json --process ../tilemaker-config/process.lua --store ./tmp/swap"
 #    opts: "--config ./config.json --process ./process.lua --store ./tmp/swap"
     postprocess: "rm -rf ./tmp/swap/*"

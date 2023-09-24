@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/planetiler:latest-data AS planetiler
-FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
-FROM ghcr.io/cmahnke/map-action/osmosis:latest AS osmosis
+FROM ghcr.io/cmahnke/map-tools/planetiler:latest-data AS planetiler
+FROM ghcr.io/cmahnke/map-tools/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-tools/osmosis:latest AS osmosis
+FROM ghcr.io/cmahnke/map-tools/osmctools:latest AS osmctools
 
 FROM alpine:3.18 as builder
 
@@ -14,7 +15,8 @@ COPY --from=planetiler /opt/planetiler /opt/planetiler
 COPY --from=planetiler /tmp/build /tmp/build
 COPY --from=osmium /opt/osmium /opt/osmium
 COPY --from=osmosis /opt/osmosis /opt/osmosis
-
+COPY --from=osmctools /opt/osmfilter /opt/osmfilter
+COPY --from=osmctools /opt/osmconvert /opt/osmconvert
 
 RUN --mount=target=/mnt/build-context \
     apk --update upgrade && \
@@ -33,6 +35,6 @@ ENV BUILD_DIR=/tmp/build \
     PLANETILER_DIR=/opt/planetiler
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 COPY --from=builder / /

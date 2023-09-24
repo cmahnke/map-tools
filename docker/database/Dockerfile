@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/baremaps:latest AS baremaps
+FROM ghcr.io/cmahnke/map-tools/baremaps:latest AS baremaps
 
 FROM ghcr.io/cmahnke/wenn-man-nicht-alles-selber-macht/postgis:15-3.3-alpine as postgis
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="gpg dirmngr gpg-agent wget jq moreutils openjdk17-jre openjdk17-jre-headless" \
     BAREMAPS_DIR=/opt/baremaps \
@@ -57,6 +57,6 @@ RUN --mount=target=/mnt/build-context \
 # Restart from an empty image to get rid of layers
 #FROM ghcr.io/cmahnke/wenn-man-nicht-alles-selber-macht/postgis:15-3.3-alpine
 #LABEL maintainer="cmahnke@gmail.com"
-#LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+#LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 #COPY --from=postgis $PGDATA $PGDATA
 #COPY docker/database/templates/indexes.sql /docker-entrypoint-initdb.d/20_indexes.sql

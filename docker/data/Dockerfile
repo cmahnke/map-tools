@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-action/planetiler:latest-data AS planetiler
-FROM ghcr.io/cmahnke/map-action/osmium:latest AS osmium
-FROM ghcr.io/cmahnke/map-action/osmosis:latest AS osmosis
+FROM ghcr.io/cmahnke/map-tools/planetiler:latest-data AS planetiler
+FROM ghcr.io/cmahnke/map-tools/osmium:latest AS osmium
+FROM ghcr.io/cmahnke/map-tools/osmctools:latest AS osmctools
 
 FROM alpine:3.18 as builder
 
@@ -25,7 +25,8 @@ ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless exp
 COPY --from=planetiler /opt/planetiler /opt/planetiler
 COPY --from=planetiler /tmp/build /tmp/build
 COPY --from=osmium /opt/osmium /opt/osmium
-COPY --from=osmosis /opt/osmosis /opt/osmosis
+COPY --from=osmctools /opt/osmfilter /opt/osmfilter
+COPY --from=osmctools /opt/osmconvert /opt/osmconvert
 
 RUN --mount=target=/mnt/build-context \
     apk --update upgrade && \
@@ -45,10 +46,21 @@ RUN --mount=target=/mnt/build-context \
     else \
       PLANETILER_OPTS="" ; \
     fi && \
-    if test "$FILTER_BUILDINGS" == 'true' ; then \
-      echo "Removing buildings" && \
-      /opt/osmium/bin/osmium tags-filter -i -o data/sources/${COVERAGE}.osm.pbf ./tmp/merged.osm.pbf a/building && \
-      rm -f ./tmp/merged.osm.pbf ; \
+    if test "$FILTER_BUILDINGS" == 'true' -o "$FILTER_BUILDINGS" == 'some' ; then \
+      echo 'Removing buildings' && \
+      /opt/osmium/bin/osmium tags-filter -i -o ./tmp/merged-filtered.osm.pbf ./tmp/merged.osm.pbf a/building && \
+      if test "$FILTER_BUILDINGS" == 'some' ; then \
+        echo 'Extracting remaining buildings' && \
+        /opt/osmconvert/bin/osmconvert tmp/merged.osm.pbf -o=tmp/merged.osm.o5m && \
+        /opt/osmfilter/bin/osmfilter tmp/merged.osm.o5m --keep='building=yes and historic=*' --keep='building=yes and name=*' --keep='building=yes and tourism=artwork' --keep='building:architecture=Brick\ Expressionism' --out-o5m |/opt/osmconvert/bin/osmconvert - -o=tmp/merged-buildings.osm.pbf && \
+        rm -rf ./tmp/merged.osm.o5m && \
+        echo 'Merge remaining buildings back' && \
+        /opt/osmium/bin/osmium merge --progress -O --fsync ./tmp/merged.osm.pbf ./tmp/merged-buildings.osm.pbf -o data/sources/${COVERAGE}.osm.pbf && \
+        rm -f ./tmp/merged.osm.pbf ./tmp/merged-buildings.osm.pbf ; \
+      else \
+        rm -f ./tmp/merged.osm.pbf && \
+        mv ./tmp/merged-filtered.osm.pbf data/sources/${COVERAGE}.osm.pbf ; \
+      fi ; \
     else \
       mv ./tmp/merged.osm.pbf data/sources/${COVERAGE}.osm.pbf ; \
     fi && \
@@ -74,6 +86,6 @@ FROM alpine:3.18
 ENV DATA_DIR=/data
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 COPY --from=builder $DATA_DIR $DATA_DIR

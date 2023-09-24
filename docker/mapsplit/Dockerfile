@@ -3,7 +3,7 @@
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-action
+LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git gradle wget sed" \
     RUN_DEPS="openjdk17-jre-headless" \
