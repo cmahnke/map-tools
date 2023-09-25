@@ -121,7 +121,7 @@ jobs:
 
           docker pull ghcr.io/cmahnke/map-tools/osmctools:ubuntu-22.04
           docker create --name osmctools ghcr.io/cmahnke/map-tools/tilemaker:ubuntu-22.04
-          docker cp tilemaker:/opt/osmctools /opt/osmctools
+          docker cp osmctools:/opt/osmctools /opt/osmctools
           docker rm -f osmctools
           docker rmi ghcr.io/cmahnke/map-tools/osmctools:ubuntu-22.04
 
