@@ -1,13 +1,17 @@
 name: Publish Docker images
 
-permissions:
-  packages: write
-  contents: write
-
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  packages: write
+  contents: write
 
 jobs:
   build_conversion_tools:

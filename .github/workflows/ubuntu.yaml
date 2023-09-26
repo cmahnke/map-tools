@@ -1,9 +1,5 @@
 name: Publish Ubuntu Docker images
 
-permissions:
-  packages: write
-  contents: write
-
 on:
   workflow_dispatch:
   workflow_run:
@@ -12,8 +8,15 @@ on:
     types:
       - completed
 
-jobs:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+permissions:
+  packages: write
+  contents: write
+
+jobs:
   build_osmium:
     name: Push osmium Ubuntu Docker image to GitHub Packages
     runs-on: ubuntu-latest
