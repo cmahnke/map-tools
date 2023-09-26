@@ -38,6 +38,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
+    directory: "/docker/mbutil/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
     directory: "/docker/planetiler/"
     schedule:
       interval: "daily"
