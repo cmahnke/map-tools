@@ -72,7 +72,7 @@ jobs:
             ghcr.io/cmahnke/map-tools/tilemaker:ubuntu-22.04
 
   build_osmctools:
-    name: Push tilemaker Ubuntu Docker image to GitHub Packages
+    name: Push osmctools Ubuntu Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -101,7 +101,7 @@ jobs:
   test:
     name: Test Ubuntu Docker images for linking errors
     runs-on: ubuntu-latest
-    needs: [build_osmium, build_tilemaker]
+    needs: [build_osmium, build_tilemaker, build_osmctools]
     steps:
       - name: Install dependencies
         run: |
