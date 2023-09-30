@@ -43,7 +43,7 @@ RUN --mount=target=/mnt/build-context \
     cd osmium-surplus && \
     mkdir build && cd build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
-    make && \
+    make install && \
     cd ../.. && \
 # Osmium tool
     git clone $OSMIUM_TOOL_REPO --branch $OSMIUM_TOOL_TAG --single-branch && \
