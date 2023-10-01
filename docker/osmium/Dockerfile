@@ -5,8 +5,8 @@ FROM alpine:3.18
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev fmt-dev sqlite-dev" \
-    RUN_DEPS="expat gdal libbz2 zlib boost1.82-program_options lz4-libs geos fmt sqlite-libs" \
+ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev fmt-dev sqlite-dev lua5.3-dev" \
+    RUN_DEPS="expat gdal libbz2 zlib boost1.82-program_options lz4-libs geos fmt sqlite-libs lua5.3-libs" \
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
@@ -15,6 +15,8 @@ ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc
     OSMIUM_TOOL_TAG="v1.16.0" \
     OSMIUM_SURPLUS_REPO="https://github.com/osmcode/osmium-surplus.git" \
     OSMIUM_SURPLUS_TAG="master" \
+    OSM_TAGS_TRANSFORM_REPO="https://github.com/osmcode/osm-tags-transform" \
+    OSM_TAGS_TRANSFORM_TAG="master" \
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \
@@ -41,6 +43,13 @@ RUN --mount=target=/mnt/build-context \
 # Osmium Surplus
     git clone $OSMIUM_SURPLUS_REPO --branch $OSMIUM_SURPLUS_TAG --single-branch && \
     cd osmium-surplus && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    make install && \
+    cd ../.. && \
+# OSM Tags Transform
+    git clone $OSM_TAGS_TRANSFORM_REPO --branch $OSM_TAGS_TRANSFORM_TAG --single-branch && \
+    cd osm-tags-transform && \
     mkdir build && cd build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make install && \

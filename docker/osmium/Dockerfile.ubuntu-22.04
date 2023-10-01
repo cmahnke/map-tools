@@ -5,8 +5,8 @@ FROM ubuntu:22.04
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev" \
-    RUN_DEPS="expat libgdal30 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libprotobuf23 libfmt8" \
+ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev liblua5.3-dev" \
+    RUN_DEPS="expat libgdal30 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libprotobuf23 libfmt8 liblua5.3" \
     #boost1.82-program_options
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
@@ -16,6 +16,8 @@ ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-
     OSMIUM_TOOL_TAG="v1.15.0" \
     OSMIUM_SURPLUS_REPO="https://github.com/osmcode/osmium-surplus.git" \
     OSMIUM_SURPLUS_TAG="master" \
+    OSM_TAGS_TRANSFORM_REPO="https://github.com/osmcode/osm-tags-transform" \
+    OSM_TAGS_TRANSFORM_TAG="master" \
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \
@@ -42,6 +44,13 @@ RUN --mount=target=/mnt/build-context \
 # Osmium Surplus
     git clone $OSMIUM_SURPLUS_REPO --branch $OSMIUM_SURPLUS_TAG --single-branch && \
     cd osmium-surplus && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    make install && \
+    cd ../.. && \
+# OSM Tags Transform
+    git clone $OSM_TAGS_TRANSFORM_REPO --branch $OSM_TAGS_TRANSFORM_TAG --single-branch && \
+    cd osm-tags-transform && \
     mkdir build && cd build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make install && \
