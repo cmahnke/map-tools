@@ -11,7 +11,9 @@ ENV BUILD_DEPS="git gradle wget sed" \
     SPLITMAP_GIT_URL=https://github.com/simonpoole/mapsplit.git \
     SPLITMAP_TAG=0.4.0
 
-RUN apk --update upgrade && \
+RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
+    echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
+    apk --update upgrade && \
     apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
     mkdir -p $BUILD_DIR $DATA_DIR && \
 # Install Splitmap

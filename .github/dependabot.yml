@@ -19,8 +19,6 @@ updates:
     directory: "/docker/baremaps/"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "maven"
   - package-ecosystem: "docker"
     directory: "/docker/database/"
     schedule:
@@ -45,8 +43,6 @@ updates:
     directory: "/docker/planetiler/"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "maven"
   - package-ecosystem: "pip"
     directory: "/docker/data/"
     schedule:

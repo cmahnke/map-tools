@@ -9,7 +9,9 @@ ENV BUILD_DEPS="git" \
     PLANETILER_GIT_URL=https://github.com/onthegomap/planetiler.git \
     PLANETILER_DIR=/opt/planetiler
 
-RUN mkdir -p $BUILD_DIR $PLANETILER_DIR && \
+RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
+    echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
+    mkdir -p $BUILD_DIR $PLANETILER_DIR && \
 # Install Planetiler
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
