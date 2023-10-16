@@ -1,37 +1,60 @@
 # syntax=docker/dockerfile:experimental
 
+FROM maven:3-eclipse-temurin-21 AS builder
+
+ARG OSMOSIS_TAG=main
+
+ENV BUILD_DEPS="git wget unzip" \
+    BUILD_DIR=/tmp/build \
+    OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
+    OSMOSIS_DIR=/opt/osmosis \
+    GRADLE_VERSION=8.4 \
+    GRADLE_HOME=/opt/gradle
+
+RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -y $BUILD_DEPS && \
+    wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp && \
+    unzip -d /opt /tmp/gradle-${GRADLE_VERSION}-bin.zip && \
+    ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle && \
+# Install Osmosis
+    cd $BUILD_DIR && \
+    git clone $OSMOSIS_GIT_URL --branch $OSMOSIS_TAG --single-branch osmosis && \
+    cd osmosis && \
+    /opt/gradle/bin/gradle build -x test && \
+    cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis
+
 FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ARG OSMOSIS_TAG=0.48.3
-
-ENV BUILD_DEPS="git gradle curl libxml2-utils" \
-    RUN_DEPS="openjdk17-jre-headless" \
+ENV RUN_DEPS="temurin-21-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
-    OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
+    OSMOSIS_DIR=/opt/osmosis \
     MAP_FILE_NAME=map.osm
+
+COPY --from=builder $OSMOSIS_DIR/osmosis-*.zip $OSMOSIS_DIR/
 
 RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories && \
     apk --update upgrade && \
-    apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
-    mkdir -p $BUILD_DIR $DATA_DIR && \
-# Install Osmosis
+    apk add --no-cache $BUILD_DEPS $RUN_DEPS && \
+    mkdir -p $BUILD_DIR $DATA_DIR $OSMOSIS_DIR && \
+
     cd $BUILD_DIR && \
-    git clone $OSMOSIS_GIT_URL --branch $OSMOSIS_TAG --single-branch && \
-    cd osmosis/ && \
-    gradle build -x test && \
-    mkdir -p /opt/osmosis && \
-    cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis && \
-    cd /opt/osmosis && \
+    #git clone $OSMOSIS_GIT_URL --branch $OSMOSIS_TAG --single-branch && \
+    #cd osmosis/ && \
+    #gradle build -x test && \
+    #mkdir -p /opt/osmosis && \
+    #cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis && \
+    cd $OSMOSIS_DIR && \
     unzip osmosis-*.zip && \
     mv osmosis-*/* . && \
     rm -r osmosis-*/ *.zip && \
 # Cleanup
-    cd / && rm -rf $BUILD_DIR /root/.gradle && \
+    cd / && rm -rf $BUILD_DIR && \
     apk del $BUILD_DEPS && \
     rm -rf /var/cache/apk/*
