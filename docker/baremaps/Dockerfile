@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-17-focal AS builder
+FROM maven:3-eclipse-temurin-21 AS builder
 
 ENV BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
     BAREMAPS_TAG="main" \
@@ -17,7 +17,7 @@ FROM alpine:3.18
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="openjdk17-jre-headless" \
+ENV RUN_DEPS="temurin-21-jre" \
     BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 
