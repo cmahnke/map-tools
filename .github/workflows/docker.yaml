@@ -71,11 +71,11 @@ jobs:
           push: true
           context: .
           build-args: |
-            OSMOSIS_TAG=0.48.3
-          file: docker/osmosis/Dockerfile.dist
+            OSMOSIS_TAG=0.49.0
+          file: docker/osmosis/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/cmahnke/map-tools/osmosis:0.48.3
+            ghcr.io/cmahnke/map-tools/osmosis:0.49.0
 
   build_osmosis_latest:
     name: Push osmosis Docker image to GitHub Packages
