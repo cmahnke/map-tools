@@ -2,7 +2,7 @@
 
 FROM maven:3-eclipse-temurin-21 AS builder
 
-ARG OSMOSIS_TAG=main
+ARG OSMOSIS_TAG=0.49.0
 
 ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \
@@ -38,18 +38,12 @@ ENV RUN_DEPS="temurin-21-jre" \
 COPY --from=builder $OSMOSIS_DIR/osmosis-*.zip $OSMOSIS_DIR/
 
 RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
+    mkdir -p /etc/apk && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $BUILD_DEPS $RUN_DEPS && \
-    mkdir -p $BUILD_DIR $DATA_DIR $OSMOSIS_DIR && \
-
-    cd $BUILD_DIR && \
-    #git clone $OSMOSIS_GIT_URL --branch $OSMOSIS_TAG --single-branch && \
-    #cd osmosis/ && \
-    #gradle build -x test && \
-    #mkdir -p /opt/osmosis && \
-    #cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis && \
+    mkdir -p $DATA_DIR $OSMOSIS_DIR && \
     cd $OSMOSIS_DIR && \
     unzip osmosis-*.zip && \
     mv osmosis-*/* . && \
