@@ -17,7 +17,7 @@ RUN mkdir -p $BUILD_DIR $PLANETILER_DIR && \
     mvn -DskipTests=true clean install package && \
     mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
