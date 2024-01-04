@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:experimental
 
-FROM ghcr.io/cmahnke/map-tools/planetiler:latest
+ARG PLANETILER_TAG=0.7.0
+
+FROM ghcr.io/cmahnke/map-tools/planetiler:${PLANETILER_TAG}
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
