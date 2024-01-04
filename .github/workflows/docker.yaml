@@ -142,6 +142,14 @@ jobs:
   build_planetiler:
     name: Push planetiler Docker image to GitHub Packages
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [main, v0.7.0]
+        include:
+          - version: main
+            IMAGE_TAG: latest
+          - version: v0.7.0
+            IMAGE_TAG: v0.7.0
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -176,9 +184,9 @@ jobs:
           file: docker/planetiler/Dockerfile
           platforms: linux/amd64,linux/arm64
           build-args: |
-            PLANETILER_TAG=main
+            PLANETILER_TAG=${{ matrix.version }}
           tags: |
-            ghcr.io/cmahnke/map-tools/planetiler:latest
+            ghcr.io/cmahnke/map-tools/planetiler:${{ matrix.IMAGE_TAG }}
 
   build_planetiler_data:
     name: Push planetiler with data Docker image to GitHub Packages
