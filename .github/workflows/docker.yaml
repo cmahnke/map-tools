@@ -144,12 +144,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [main, v0.7.0, v0.6.0]
+        version: [main, v0.7.0]
         include:
           - version: main
             IMAGE_TAG: latest
-          - version: v0.6.0
-            IMAGE_TAG: 0.6.0
           - version: v0.7.0
             IMAGE_TAG: 0.7.0
     steps:
