@@ -1,9 +1,12 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-21 AS builder
-
 ARG PLANETILER_TAG=v0.7.0
 ARG DOWNLOAD_DATA=""
+
+FROM maven:3-eclipse-temurin-21 AS builder
+
+ARG PLANETILER_TAG
+ARG DOWNLOAD_DATA
 
 ENV BUILD_DEPS="git wget" \
     BUILD_DIR=/tmp/build \
