@@ -3,3 +3,4 @@ openmaptiles
 **/.DS_Store
 **/*.osm.pbf
 **/TODO
+tmp
