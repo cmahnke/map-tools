@@ -3,19 +3,28 @@
 FROM maven:3-eclipse-temurin-21 AS builder
 
 ARG PLANETILER_TAG=v0.7.0
+ARG DOWNLOAD_DATA=""
 
-ENV BUILD_DEPS="git" \
+ENV BUILD_DEPS="git wget" \
     BUILD_DIR=/tmp/build \
     PLANETILER_GIT_URL=https://github.com/onthegomap/planetiler.git \
-    PLANETILER_DIR=/opt/planetiler
+    PLANETILER_DIR=/opt/planetiler \
+    PLANETILER_DATA_DIR=/usr/share/planetiler
 
-RUN mkdir -p $BUILD_DIR $PLANETILER_DIR && \
+RUN --mount=target=/mnt/build-context \
+    mkdir -p $BUILD_DIR $PLANETILER_DIR $PLANETILER_DATA_DIR && \
+    cp /mnt/build-context/docker/planetiler/scripts/* $BUILD_DIR && \
 # Install Planetiler
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
     cd planetiler && \
     mvn -DskipTests=true clean install package && \
-    mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR
+    mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR && \
+# Download data
+    if test -n "$DOWNLOAD_DATA" ; then \
+      cd $BUILD_DIR && \
+      ./get-data.sh ; \
+    fi
 
 FROM alpine:3.19
 
