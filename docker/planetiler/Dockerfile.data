@@ -8,20 +8,20 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="wget" \
+    BUILD_DIR=/tmp/build \
     PLANETILER_DATA_DIR=/usr/share/planetiler \
     PLANETILER_DIR=/opt/planetiler
 
-RUN apk --update upgrade && \
-    apk add --no-cache $RUN_DEPS && \
-    mkdir -p "$PLANETILER_DATA_DIR/data/sources/"  && \
-    cd "$PLANETILER_DATA_DIR/data/sources/" && \
-    wget https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip && \
-    wget https://dev.maptiler.download/geodata/omt/lake_centerline.shp.zip && \
-    wget https://dev.maptiler.download/geodata/omt/natural_earth_vector.sqlite.zip && \
-    ln -s $PLANETILER_DATA_DIR/data $PLANETILER_DIR/data && \
+RUN --mount=target=/mnt/build-context \
+    apk --update upgrade && \
+    apk add --no-cache $BUILD_DEPS && \
+    mkdir -p $BUILD_DIR $PLANETILER_DIR $PLANETILER_DIR && \
+    cp /mnt/build-context/docker/planetiler/scripts/* $BUILD_DIR && \
+    cd $BUILD_DIR && \
+    ./get-data.sh && \
 ## Cleanup
     cd / && \
     apk del $BUILD_DEPS && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* $BUILD_DIR
 
 WORKDIR $BUILD_DIR
