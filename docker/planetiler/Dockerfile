@@ -31,10 +31,14 @@ FROM alpine:3.19
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
+ARG DOWNLOAD_DATA
+
 ENV RUN_DEPS="temurin-21-jre" \
-    PLANETILER_DIR=/opt/planetiler
+    PLANETILER_DIR=/opt/planetiler \
+    PLANETILER_DATA_DIR=/usr/share/planetiler
 
 COPY --from=builder $PLANETILER_DIR/*with-deps.jar $PLANETILER_DIR/
+COPY --from=builder $PLANETILER_DATA_DIR $PLANETILER_DATA_DIR
 
 RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
@@ -44,5 +48,10 @@ RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifac
     printf "#!/bin/sh\njava -Xmx2g -jar /opt/planetiler/planetiler*-with-deps.jar" > /opt/planetiler/bin/planetiler && \
     chmod +x /opt/planetiler/bin/planetiler && \
     export PATH=$PATH:$PLANETILER_DIR/bin && \
+    if test -z "$DOWNLOAD_DATA" ; then \
+      rm -rf $PLANETILER_DATA_DIR ; \
+    else \
+      ln -s $PLANETILER_DATA_DIR/data $PLANETILER_DIR/data ; \
+    fi && \
 # Cleanup
     rm -rf /var/cache/apk/* /root/.cache
