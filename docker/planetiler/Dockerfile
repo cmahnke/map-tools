@@ -52,8 +52,10 @@ RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifac
     chmod +x /opt/planetiler/bin/planetiler && \
     export PATH=$PATH:$PLANETILER_DIR/bin && \
     if test -z "$DOWNLOAD_DATA" ; then \
+      echo "Removing existing data directory" && \
       rm -rf $PLANETILER_DATA_DIR ; \
     else \
+      echo "Relinking data directory" && \
       ln -s $PLANETILER_DATA_DIR/data $PLANETILER_DIR/data ; \
     fi && \
 # Cleanup
