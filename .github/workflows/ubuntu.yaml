@@ -105,6 +105,7 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install -y liblua5.1-0 zlib1g liblz4-1 libsqlite3-0 libbz2-1.0 libboost-program-options1.74.0 libboost-filesystem1.74.0 libboost-iostreams1.74.0 libprotobuf23 expat libgdal30 liblz4-1 libgeos-c1v5
 
       - name: Extract
