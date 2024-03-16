@@ -2,7 +2,7 @@
 
 FROM maven:3-eclipse-temurin-21 AS builder
 
-ARG OSMOSIS_TAG=0.49.0
+ARG OSMOSIS_TAG=0.49.2
 
 ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \

@@ -8,9 +8,9 @@ LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 ENV BUILD_DEPS="git wget cmake make libtool autoconf automake alpine-sdk zlib-dev sqlite-dev bzip2-dev lz4-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev bzip2-dev rapidjson-dev" \
     RUN_DEPS="zlib sqlite-libs bzip2 lz4-libs boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf lua5.1-libs bash" \
     SHAPELIB_GIT_REPO="https://github.com/OSGeo/shapelib.git" \
-    SHAPELIB_GIT_TAG="v1.5.0" \
+    SHAPELIB_GIT_TAG="v1.6.0" \
     TILEMAKER_GIT_REPO="https://github.com/systemed/tilemaker.git" \
-    TILEMAKER_GIT_TAG="v2.4.0" \
+    TILEMAKER_GIT_TAG="v3.0.0" \
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \

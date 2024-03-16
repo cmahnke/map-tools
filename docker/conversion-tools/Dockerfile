@@ -14,9 +14,9 @@ ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
     TIPPECANOE_GIT_TAG="1.36.0" \
     NLOHMANN_JSON_GIT_REPO="https://github.com/nlohmann/json.git" \
-    NLOHMANN_JSON_GIT_TAG="v3.11.2" \
+    NLOHMANN_JSON_GIT_TAG="v3.11.3" \
     OSM2PGSQL_GIT_REPO="https://github.com/openstreetmap/osm2pgsql.git" \
-    OSM2PGSQL_GIT_TAG="1.9.2" \
+    OSM2PGSQL_GIT_TAG="1.11.0" \
     BUILD_DIR=/tmp/build
 
 COPY --from=osmium /opt/osmium /opt/osmium
