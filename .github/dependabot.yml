@@ -15,39 +15,79 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "alpine"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/conversion-tools/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/baremaps/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/database/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/osmium/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/osmctools/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/databuilder/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/mbutil/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "docker"
     directory: "/docker/planetiler/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
   - package-ecosystem: "pip"
     directory: "/docker/data/"
     schedule:
       interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
