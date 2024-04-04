@@ -78,6 +78,8 @@ updates:
         - '*'
   - package-ecosystem: "docker"
     directory: "/docker/planetiler/"
+    ignore:
+      - dependency-name: "maven"
     schedule:
       interval: "daily"
     groups:
