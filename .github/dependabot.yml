@@ -15,6 +15,7 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "alpine"
+      - dependency-name: "maven"
     groups:
       docker:
         patterns:
