@@ -29,7 +29,7 @@ RUN --mount=target=/mnt/build-context \
       ./get-data.sh ; \
     fi
 
-FROM alpine:3.19
+FROM alpine:3.18
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools

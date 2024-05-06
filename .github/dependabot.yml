@@ -84,6 +84,7 @@ updates:
     directory: "/docker/planetiler/"
     ignore:
       - dependency-name: "maven"
+      - dependency-name: "alpine"
     schedule:
       interval: "daily"
     groups:
