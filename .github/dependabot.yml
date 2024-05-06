@@ -24,6 +24,8 @@ updates:
     directory: "/docker/conversion-tools/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
     groups:
       docker:
         patterns:
@@ -32,6 +34,8 @@ updates:
     directory: "/docker/baremaps/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
     groups:
       docker:
         patterns:
