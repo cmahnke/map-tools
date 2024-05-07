@@ -12,12 +12,12 @@ RUN mkdir -p $BUILD_DIR && \
     cd baremaps && \
     mvn package -Dmaven.test.skip=true
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-21-jre" \
+ENV RUN_DEPS="temurin-22-jre" \
     BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 

@@ -3,7 +3,7 @@
 ARG PLANETILER_TAG=v0.7.0
 ARG DOWNLOAD_DATA=""
 
-FROM maven:3-eclipse-temurin-21 AS builder
+FROM maven:3-eclipse-temurin-22 AS builder
 
 ARG PLANETILER_TAG
 ARG DOWNLOAD_DATA
@@ -29,14 +29,14 @@ RUN --mount=target=/mnt/build-context \
       ./get-data.sh ; \
     fi
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ARG DOWNLOAD_DATA
 
-ENV RUN_DEPS="temurin-21-jre" \
+ENV RUN_DEPS="temurin-22-jre" \
     PLANETILER_DIR=/opt/planetiler \
     PLANETILER_DATA_DIR=/usr/share/planetiler
 
