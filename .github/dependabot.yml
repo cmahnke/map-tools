@@ -23,6 +23,8 @@ updates:
     directory: "/docker/conversion-tools/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
     groups:
       docker:
         patterns:
