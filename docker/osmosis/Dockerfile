@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-21 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
@@ -29,7 +29,7 @@ FROM alpine:3.19
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-22-jre" \
+ENV RUN_DEPS="temurin-21-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
     OSMOSIS_DIR=/opt/osmosis \
