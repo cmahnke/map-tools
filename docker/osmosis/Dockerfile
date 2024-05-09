@@ -8,7 +8,7 @@ ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
     OSMOSIS_DIR=/opt/osmosis \
-    GRADLE_VERSION=8.4 \
+    GRADLE_VERSION=8.7 \
     GRADLE_HOME=/opt/gradle
 
 RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
@@ -29,7 +29,7 @@ FROM alpine:3.19
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-21-jre" \
+ENV RUN_DEPS="temurin-22-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
     OSMOSIS_DIR=/opt/osmosis \
