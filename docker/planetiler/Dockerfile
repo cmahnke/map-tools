@@ -21,7 +21,7 @@ RUN --mount=target=/mnt/build-context \
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
     cd planetiler && \
-    mvn -DskipTests=true clean install package && \
+    mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install package && \
     mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR && \
 # Download data
     if test -n "$DOWNLOAD_DATA" ; then \
