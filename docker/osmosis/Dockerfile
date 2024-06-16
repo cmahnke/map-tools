@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-21 AS builder
+FROM maven:3-eclipse-temurin-22 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
@@ -8,12 +8,10 @@ ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
     OSMOSIS_DIR=/opt/osmosis \
-    GRADLE_VERSION=8.7 \
+    GRADLE_VERSION=8.8 \
     GRADLE_HOME=/opt/gradle
 
-RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
-    echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
-    mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
+RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     apt-get update && apt-get upgrade -y && \
     apt-get install -y $BUILD_DEPS && \
     wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp && \
@@ -31,7 +29,7 @@ FROM alpine:3.19
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-21-jre" \
+ENV RUN_DEPS="temurin-22-jre" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
     OSMOSIS_DIR=/opt/osmosis \
