@@ -11,7 +11,9 @@ ENV BUILD_DEPS="git wget unzip" \
     GRADLE_VERSION=8.7 \
     GRADLE_HOME=/opt/gradle
 
-RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
+RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
+    echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
+    mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     apt-get update && apt-get upgrade -y && \
     apt-get install -y $BUILD_DEPS && \
     wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp && \
