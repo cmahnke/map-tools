@@ -7,7 +7,7 @@ FROM ghcr.io/cmahnke/map-tools/osmctools:latest AS osmctools
 
 FROM alpine:3.20 as builder
 
-ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests openjdk17-jre-headless expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
+ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests temurin-22-jre expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
     BUILD_DIR=/tmp/build \
     DATA_DIR=/data
 
@@ -17,6 +17,9 @@ COPY --from=osmium /opt/osmium /opt/osmium
 COPY --from=osmctools /opt/osmctools /opt/osmctools
 
 RUN --mount=target=/mnt/build-context \
+    wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
+    mkdir -p /etc/apk && \
+    echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $RUN_DEPS $BUILD_DEPS && \
     mkdir -p $BUILD_DIR $DATA_DIR $BUILD_DIRdata/output/ && \
