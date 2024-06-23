@@ -122,8 +122,8 @@ jobs:
     name: Push planetiler Docker image to GitHub Packages
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         version: [main, v0.8.0]
         data: ['', '-data']
         include:
