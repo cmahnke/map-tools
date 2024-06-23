@@ -24,7 +24,7 @@ RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     /opt/gradle/bin/gradle build -x test && \
     cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
@@ -40,7 +40,6 @@ COPY --from=builder $OSMOSIS_DIR/osmosis-*.zip $OSMOSIS_DIR/
 RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
     mkdir -p /etc/apk && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $DATA_DIR $OSMOSIS_DIR && \
