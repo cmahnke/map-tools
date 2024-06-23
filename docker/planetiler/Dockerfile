@@ -21,7 +21,8 @@ RUN --mount=target=/mnt/build-context \
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
     cd planetiler && \
-    mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install package && \
+    mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install  && \
+    mvn -Dmaven.javadoc.skip=true -Dmaven.source.skip -DskipTests=true package && \
     mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR && \
 # Download data
     if test -n "$DOWNLOAD_DATA" ; then \
@@ -29,7 +30,7 @@ RUN --mount=target=/mnt/build-context \
       ./get-data.sh ; \
     fi
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
