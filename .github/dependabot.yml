@@ -13,8 +13,6 @@ updates:
     directory: "/docker/osmosis/"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "maven"
     groups:
       docker:
         patterns:
@@ -55,6 +53,8 @@ updates:
         - '*'
   - package-ecosystem: "docker"
     directory: "/docker/osmctools/"
+    ignore:
+      - dependency-name: "ubuntu"
     schedule:
       interval: "daily"
     groups:
