@@ -38,7 +38,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -77,7 +77,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -109,7 +109,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -149,7 +149,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push latest Git version to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -192,7 +192,7 @@ jobs:
 #      - name: Set up Docker Buildx
 #        uses: docker/setup-buildx-action@v3.3.0
 #      - name: Push latest Git version to GitHub Packages
-#        uses: docker/build-push-action@v6.1.0
+#        uses: docker/build-push-action@v6.2.0
 #        with:
 #          push: true
 #          context: .
@@ -225,7 +225,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -255,7 +255,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -285,7 +285,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -315,7 +315,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -345,7 +345,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           push: true
           context: .
@@ -376,7 +376,7 @@ jobs:
 #      - name: Set up Docker Buildx
 #        uses: docker/setup-buildx-action@v3.3.0
 #      - name: Push to GitHub Packages
-#        uses: docker/build-push-action@v6.1.0
+#        uses: docker/build-push-action@v6.2.0
 #        with:
 #          push: true
 #          context: .
@@ -406,7 +406,7 @@ jobs:
 #      - name: Set up Docker Buildx
 #        uses: docker/setup-buildx-action@v3.3.0
 #      - name: Push to GitHub Packages
-#        uses: docker/build-push-action@v6.1.0
+#        uses: docker/build-push-action@v6.2.0
 #        with:
 #          push: true
 #          context: .
