@@ -13,6 +13,12 @@ DOCKER_BUILDKIT=1 docker build -t ghcr.io/cmahnke/map-tools:latest .
 docker buildx build -f docker/conversion-tools/Dockerfile .
 ```
 
+## Osmium
+
+```
+docker buildx build -f docker/osmium/Dockerfile .
+```
+
 ## Osmosis
 
 ```
