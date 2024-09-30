@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-23 AS builder
 
 ENV BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
     BAREMAPS_TAG="main" \
