@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-23 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
@@ -8,7 +8,7 @@ ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
     OSMOSIS_DIR=/opt/osmosis \
-    GRADLE_VERSION=8.8 \
+    GRADLE_VERSION=8.10 \
     GRADLE_HOME=/opt/gradle
 
 RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
