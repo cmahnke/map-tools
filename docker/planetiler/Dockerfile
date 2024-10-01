@@ -3,7 +3,7 @@
 ARG PLANETILER_TAG=v0.8.0
 ARG DOWNLOAD_DATA=""
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-23 AS builder
 
 ARG PLANETILER_TAG
 ARG DOWNLOAD_DATA
@@ -37,7 +37,7 @@ LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ARG DOWNLOAD_DATA
 
-ENV RUN_DEPS="temurin-22-jre" \
+ENV RUN_DEPS="temurin-23-jre" \
     PLANETILER_DIR=/opt/planetiler \
     PLANETILER_DATA_DIR=/usr/share/planetiler
 

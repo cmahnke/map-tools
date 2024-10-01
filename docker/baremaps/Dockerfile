@@ -17,7 +17,7 @@ FROM alpine:3.20
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-22-jre" \
+ENV RUN_DEPS="temurin-23-jre" \
     BUILD_DIR=/tmp/build \
     BAREMAPS_DIR=/opt/baremaps
 
