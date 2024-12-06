@@ -12,7 +12,7 @@ RUN mkdir -p $BUILD_DIR && \
     cd baremaps && \
     mvn package -Dmaven.test.skip=true
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
