@@ -24,7 +24,7 @@ RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     /opt/gradle/bin/gradle build -x test && \
     cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
