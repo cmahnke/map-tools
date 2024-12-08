@@ -47,6 +47,8 @@ updates:
     directory: "/docker/osmium/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "alpine"
     groups:
       docker:
         patterns:
