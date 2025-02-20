@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:experimental
 
-ARG PLANETILER_TAG=v0.8.3
+ARG PLANETILER_TAG=v0.8.4
 ARG DOWNLOAD_DATA=""
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-23 AS builder
 
 ARG PLANETILER_TAG
 ARG DOWNLOAD_DATA
