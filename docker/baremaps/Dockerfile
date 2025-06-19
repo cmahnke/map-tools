@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-23 AS builder
+FROM maven:3-eclipse-temurin-24 AS builder
 
 ENV BAREMAPS_REPO=https://github.com/apache/incubator-baremaps.git \
     BAREMAPS_TAG="main" \
@@ -12,7 +12,7 @@ RUN mkdir -p $BUILD_DIR && \
     cd baremaps && \
     mvn package -Dmaven.test.skip=true
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
