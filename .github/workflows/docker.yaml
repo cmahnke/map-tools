@@ -230,6 +230,7 @@ jobs:
           push: true
           context: .
           file: docker/baremaps/Dockerfile
+          network: host
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/cmahnke/map-tools/baremaps:latest
