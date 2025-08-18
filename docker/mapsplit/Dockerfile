@@ -31,7 +31,7 @@ RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     mkdir -p $SPLITMAP_DIR && \
     mv build/libs/mapsplit-all-*.jar $SPLITMAP_DIR
 
-FROM alpine:3.20
+FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
