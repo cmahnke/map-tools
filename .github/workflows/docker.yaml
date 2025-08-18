@@ -84,6 +84,7 @@ jobs:
           build-args: |
             OSMOSIS_TAG=${{ matrix.version }}
           file: docker/osmosis/Dockerfile
+          network: host
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/cmahnke/map-tools/osmosis:${{ matrix.IMAGE_TAG }}
@@ -155,6 +156,7 @@ jobs:
           context: .
           file: docker/planetiler/Dockerfile
           platforms: linux/amd64,linux/arm64
+          network: host
           build-args: |
             PLANETILER_TAG=${{ matrix.version }}
             DOWNLOAD_DATA=${{ matrix.data }}
