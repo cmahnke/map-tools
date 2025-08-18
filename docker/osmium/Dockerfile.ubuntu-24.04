@@ -6,14 +6,14 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev liblua5.3-dev" \
-    RUN_DEPS="expat libgdal34t64 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libprotobuf-dev libfmt9 liblua5.3" \
+    RUN_DEPS="expat libgdal30 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libprotobuf23 libfmt8 liblua5.3" \
     #boost1.82-program_options
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
-    LIBOSMIUM_TAG="v2.19.0" \
+    LIBOSMIUM_TAG="v2.22.0" \
     OSMIUM_TOOL_REPO=https://github.com/osmcode/osmium-tool \
-    OSMIUM_TOOL_TAG="v1.15.0" \
+    OSMIUM_TOOL_TAG="v1.18.0" \
     OSMIUM_SURPLUS_REPO="https://github.com/osmcode/osmium-surplus.git" \
     OSMIUM_SURPLUS_TAG="master" \
     OSM_TAGS_TRANSFORM_REPO="https://github.com/osmcode/osm-tags-transform" \
@@ -22,7 +22,7 @@ ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-
 
 RUN --mount=target=/mnt/build-context \
     apt-get update && apt-get upgrade -y && \
-    apt-get install -y $BUILD_DEPS $RUN_DEPS && \
+      apt-get install -y $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $BUILD_DIR && \
     cd $BUILD_DIR && \
 # Protozero
