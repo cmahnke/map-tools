@@ -5,8 +5,8 @@ FROM ubuntu:24.04
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev liblua5.3-dev" \
-    RUN_DEPS="expat libgdal34t64 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libfmt9 liblua5.3 libprotobuf32t64" \
+ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev liblua5.3-dev nlohmann-json3-dev" \
+    RUN_DEPS="expat libgdal34t64 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libfmt9 liblua5.3 libprotobuf32t64 nlohmann-json3" \
     #boost1.82-program_options
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
