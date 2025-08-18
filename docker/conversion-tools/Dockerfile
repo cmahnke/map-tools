@@ -2,13 +2,13 @@ FROM ghcr.io/cmahnke/map-tools/osmium:latest AS osmium
 FROM ghcr.io/cmahnke/map-tools/tilemaker:latest AS tilemaker
 FROM ghcr.io/cmahnke/map-tools/osmctools:latest AS osmctools
 
-FROM alpine:3.19
+FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git wget cmake make automake autoconf libtool clang-dev g++ zlib-dev sqlite-dev bzip2-dev expat-dev lz4-dev rapidjson-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev libffi-dev postgresql-dev bzip2-dev proj-dev potrace-dev cimg" \
-    RUN_DEPS="zlib sqlite bzip2 expat lz4-libs rapidjson boost1.82-program_options boost1.82-filesystem boost1.82-iostreams protobuf gdal gdal-tools lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
+    RUN_DEPS="zlib sqlite bzip2 expat lz4-libs rapidjson boost1.84-program_options boost1.84-filesystem boost1.84-iostreams protobuf gdal gdal-tools lua5.1 gettext bash libcrypto3 proj postgresql-libs potrace" \
     TIPPECANOE_GIT_REPO="https://github.com/mapbox/tippecanoe.git" \
     TIPPECANOE_GIT_TAG="1.36.0" \
     NLOHMANN_JSON_GIT_REPO="https://github.com/nlohmann/json.git" \
