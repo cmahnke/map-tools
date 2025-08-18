@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM alpine:3.20
+FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
@@ -20,7 +20,7 @@ ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \
-    echo "http://dl-cdn.alpinelinux.org/alpine/3.20/community" >> /etc/apk/repositories && \
+    #echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $BUILD_DIR && \
