@@ -6,7 +6,7 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev fmt-dev sqlite-dev lua5.3-dev" \
-    RUN_DEPS="expat gdal libbz2 zlib boost1.84-program_options lz4-libs geos fmt sqlite-libs lua5.3-libs" \
+    RUN_DEPS="expat gdal libbz2 zlib boost1.84-program_options lz4-libs geos fmt sqlite-libs lua5.3-libs nlohmann-json" \
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
@@ -20,6 +20,7 @@ ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc
     BUILD_DIR=/tmp/build
 
 RUN --mount=target=/mnt/build-context \
+    echo "http://dl-cdn.alpinelinux.org/alpine/3.20/community" >> /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $BUILD_DEPS $RUN_DEPS && \
     mkdir -p $BUILD_DIR && \

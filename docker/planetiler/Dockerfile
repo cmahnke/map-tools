@@ -46,6 +46,7 @@ COPY --from=builder $PLANETILER_DATA_DIR $PLANETILER_DATA_DIR
 
 RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
+    sed -i -e 's/http:/https:/' /etc/apk/repositories && \
     apk --update upgrade && \
     apk add --no-cache $RUN_DEPS && \
     mkdir -p $PLANETILER_DIR/bin && \
