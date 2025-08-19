@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-24 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
@@ -36,7 +36,7 @@ FROM alpine:3.22
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
-ENV RUN_DEPS="temurin-22-jre" \
+ENV RUN_DEPS="temurin-24-jre" \
     SPLITMAP_GIT_URL=https://github.com/simonpoole/mapsplit.git \
     SPLITMAP_TAG=0.4.0 \
     SPLITMAP_DIR=/opt/splitmap
