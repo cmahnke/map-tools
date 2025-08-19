@@ -8,7 +8,7 @@ ENV BUILD_DEPS="git wget unzip" \
     BUILD_DIR=/tmp/build \
     OSMOSIS_GIT_URL=https://github.com/openstreetmap/osmosis.git \
     OSMOSIS_DIR=/opt/osmosis \
-    GRADLE_VERSION=8.10 \
+    GRADLE_VERSION=8.14.3 \
     GRADLE_HOME=/opt/gradle
 
 RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \

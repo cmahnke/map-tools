@@ -9,7 +9,7 @@ ENV BUILD_DEPS="git wget unzip" \
     SPLITMAP_GIT_URL=https://github.com/simonpoole/mapsplit.git \
     SPLITMAP_TAG=0.4.0 \
     SPLITMAP_DIR=/opt/splitmap \
-    GRADLE_VERSION=8.8 \
+    GRADLE_VERSION=8.14.3 \
     GRADLE_HOME=/opt/gradle
 
 RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
