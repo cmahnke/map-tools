@@ -27,7 +27,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -66,7 +66,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -99,7 +99,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -129,7 +129,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -169,7 +169,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -213,7 +213,7 @@ jobs:
 #          submodules: true
 #          fetch-depth: 0
 #      - name: Login to GitHub Packages Docker Registry
-#        uses: docker/login-action@v3.5.0
+#        uses: docker/login-action@v3.6.0
 #        with:
 #          registry: ghcr.io
 #          username: ${{ github.actor }}
@@ -246,7 +246,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -277,7 +277,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -307,7 +307,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -337,7 +337,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -367,7 +367,7 @@ jobs:
           submodules: true
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v3.5.0
+        uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -398,7 +398,7 @@ jobs:
 #          submodules: true
 #          fetch-depth: 0
 #      - name: Login to GitHub Packages Docker Registry
-#        uses: docker/login-action@v3.5.0
+#        uses: docker/login-action@v3.6.0
 #        with:
 #          registry: ghcr.io
 #          username: ${{ github.actor }}
@@ -428,7 +428,7 @@ jobs:
 #          submodules: true
 #          fetch-depth: 0
 #      - name: Login to GitHub Packages Docker Registry
-#        uses: docker/login-action@v3.5.0
+#        uses: docker/login-action@v3.6.0
 #        with:
 #          registry: ghcr.io
 #          username: ${{ github.actor }}
