@@ -4,3 +4,4 @@ openmaptiles
 **/*.osm.pbf
 **/TODO
 tmp
+docker/planetiler-native/src
