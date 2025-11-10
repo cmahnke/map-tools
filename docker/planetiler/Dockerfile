@@ -22,7 +22,7 @@ RUN --mount=target=/mnt/build-context \
 # Install Planetiler
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
-    if [ -n "$( ls "$BUILD_DIR/addons/" )" ]; then \
+    if [ -n "$( ls "$BUILD_DIR/src/" )" ]; then \
       cp -r $BUILD_DIR/src/* $BUILD_DIR/planetile/planetiler-openmaptiles/src/ ; \
     fi && \
     cd planetiler && \
