@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-ARG PLANETILER_TAG=v0.9.1
+ARG PLANETILER_TAG=v0.9.3
 ARG DOWNLOAD_DATA=""
 
 FROM maven:3-eclipse-temurin-22 AS builder
@@ -14,12 +14,17 @@ ENV BUILD_DEPS="git wget" \
     PLANETILER_DIR=/opt/planetiler \
     PLANETILER_DATA_DIR=/usr/share/planetiler
 
+COPY docker/planetiler/addons/* $BUILD_DIR/addons/
+
 RUN --mount=target=/mnt/build-context \
     mkdir -p $BUILD_DIR $PLANETILER_DIR $PLANETILER_DATA_DIR && \
     cp /mnt/build-context/docker/planetiler/scripts/* $BUILD_DIR && \
 # Install Planetiler
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
+    if [ -n "$( ls "$BUILD_DIR/addons/" )" ]; then \
+      cp -r $BUILD_DIR/addons/* $BUILD_DIR/planetile/planetiler-openmaptiles/src/main/java/org/openmaptiles/addons/
+    fi && \
     cd planetiler && \
     mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install  && \
     mvn -Dmaven.javadoc.skip=true -Dmaven.source.skip -DskipTests=true package && \
