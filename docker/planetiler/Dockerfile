@@ -23,7 +23,7 @@ RUN --mount=target=/mnt/build-context \
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
     if [ -n "$( ls "$BUILD_DIR/addons/" )" ]; then \
-      cp -r $BUILD_DIR/addons/* $BUILD_DIR/planetile/planetiler-openmaptiles/src/main/java/org/openmaptiles/addons/
+      cp -r $BUILD_DIR/addons/* $BUILD_DIR/planetile/planetiler-openmaptiles/src/main/java/org/openmaptiles/addons/ ; \
     fi && \
     cd planetiler && \
     mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install  && \
