@@ -20,6 +20,9 @@ enum RoadwayExtensionSide {
 }
 
 public class StreetsUtils {
+  private static ColorParser colorParser = new ColorParser();
+  static Double DEFAULT_HEIGHT = 3.66;
+
   private static final List<String> memorialTypes = Arrays.asList(
     "war_memorial", "stele", "obelisk", "memorial", "stone"
   );
@@ -151,12 +154,23 @@ public class StreetsUtils {
   public static Double getHeight(SourceFeature sourceFeature) {
     String height = (String) sourceFeature.getTag("height");
     String estHeight = (String) sourceFeature.getTag("est_height");
+    String levels = (String) sourceFeature.getTag("building:levels");
 
     if (height != null) {
       return parseMeters(height);
+    } else if (estHeight != null) {
+      return parseMeters(estHeight);
+    } else if (levels != null) {
+      /*
+      String underground = (String) sourceFeature.getTag("building:levels:underground");
+      if (underground != null) {
+        return (Integer.parseInt(levels) - Integer.parseInt(underground)) * DEFAULT_HEIGHT;
+      }
+      */
+      return Integer.parseInt(levels) * DEFAULT_HEIGHT;
     }
 
-    return parseMeters(estHeight);
+    return DEFAULT_HEIGHT;
   }
 
   public static Double getMinHeight(SourceFeature sourceFeature) {
@@ -192,13 +206,11 @@ public class StreetsUtils {
   }
 
   public static String getBuildingColor(SourceFeature sourceFeature) {
-    String color = getFirstTagValue((String) sourceFeature.getTag("building:colour"));
-    return color;
+    return colorParser.parseColor(sourceFeature, "building:colour", "building:material");
   }
 
   public static String getRoofColor(SourceFeature sourceFeature) {
-    String color = getFirstTagValue((String) sourceFeature.getTag("roof:colour"));
-    return color;
+    return colorParser.parseColor(sourceFeature, "roof:colour", "roof:material");
   }
 
   public static String getRoofOrientation(SourceFeature sourceFeature) {

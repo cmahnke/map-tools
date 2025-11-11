@@ -55,9 +55,16 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       ) {
         Boolean isPart = feature.hasTag("building:part");
         //String buildingType = isPart ? (String) feature.getTag("building:part") : (String) feature.getTag("building");
+
         features.polygon("building")
           .setAttr("type", "building")
           .setAttr("isPart", isPart)
+          .setAttr("highlight", feature.getTag("highlight"))
+          //TODO: This might also be part of the relation conneting building parts
+          .setAttr("architect", feature.getTag("architect"))
+          .setAttr("architecture", feature.getTag("architecture"))
+          .setAttr("construction_date", feature.getTag("construction_date"))
+          .setAttr("wikidata", feature.getTag("wikidata"))
           //.setAttr("buildingType", buildingType)
           .setAttr("name", feature.getTag("name"))
           .setAttr("height", StreetsUtils.getHeight(feature))
@@ -69,7 +76,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("material", StreetsUtils.getBuildingMaterial(feature))
           .setAttr("roofHeight", StreetsUtils.getRoofHeight(feature))
           .setAttr("roofLevels", StreetsUtils.getRoofLevels(feature))
-          .setAttr("roofMaterial", StreetsUtils.getRoofMaterial(feature))
           .setAttr("roofMaterial", StreetsUtils.getRoofMaterial(feature))
           .setAttr("roofType", StreetsUtils.getRoofShape(feature))
           .setAttr("roofOrientation", StreetsUtils.getRoofOrientation(feature))
