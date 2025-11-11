@@ -167,7 +167,7 @@ public class StreetsUtils {
         return (Integer.parseInt(levels) - Integer.parseInt(underground)) * DEFAULT_HEIGHT;
       }
       */
-      return Integer.parseInt(levels) * DEFAULT_HEIGHT;
+      return Float.parseFloat(levels) * DEFAULT_HEIGHT;
     }
 
     return DEFAULT_HEIGHT;

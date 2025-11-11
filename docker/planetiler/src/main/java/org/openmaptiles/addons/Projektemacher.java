@@ -23,6 +23,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Double height = StreetsUtils.getTreeHeight(feature);
         //Double height = Parse.meters(feature.getTag("height"));
         features.point("tree")
+          .setAttr("type", "tree")
           .setAttr("height", height)
           .setMinZoom(14);
 
@@ -38,6 +39,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
     if (feature.canBeLine()) {
       if (feature.hasTag("natural", "tree_row")) {
         features.line("tree")
+          .setAttr("type", "tree_row")
           .setAttr("height", StreetsUtils.getTreeHeight(feature))
           .setMinZoom(14);
       }
