@@ -31,6 +31,12 @@ docker buildx build -f docker/osmosis/Dockerfile .
 docker buildx build -f docker/baremaps/Dockerfile .
 ```
 
+# Planetiler
+
+```
+docker build --build-arg PLANETILER_TAG=main -t ghcr.io/cmahnke/map-tools/planetiler:latest -f docker/planetiler/Dockerfile .
+```
+
 ## Database
 
 ```
@@ -42,6 +48,3 @@ or
 ```
 docker buildx build --progress=plain --build-arg="URL=https://download.geofabrik.de/europe/luxembourg-latest.osm.pbf" -f docker/database/Dockerfile .
 ```
-
-# TODO
-* Generate Image with map data

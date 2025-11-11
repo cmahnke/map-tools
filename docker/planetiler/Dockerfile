@@ -14,7 +14,7 @@ ENV BUILD_DEPS="git wget" \
     PLANETILER_DIR=/opt/planetiler \
     PLANETILER_DATA_DIR=/usr/share/planetiler
 
-COPY docker/planetiler/addons/* $BUILD_DIR/addons/
+COPY docker/planetiler/src $BUILD_DIR/src
 
 RUN --mount=target=/mnt/build-context \
     mkdir -p $BUILD_DIR $PLANETILER_DIR $PLANETILER_DATA_DIR && \
@@ -23,9 +23,10 @@ RUN --mount=target=/mnt/build-context \
     cd $BUILD_DIR && \
     git clone --recurse-submodules $PLANETILER_GIT_URL --branch $PLANETILER_TAG --single-branch && \
     if [ -n "$( ls "$BUILD_DIR/src/" )" ]; then \
-      cp -r $BUILD_DIR/src/* $BUILD_DIR/planetile/planetiler-openmaptiles/src/ ; \
+      cp -r $BUILD_DIR/src/* $BUILD_DIR/planetiler/planetiler-openmaptiles/src ; \
     fi && \
     cd planetiler && \
+    #ls $BUILD_DIR/planetiler/planetiler-openmaptiles/src/main/java/org/openmaptiles/addons && \
     mvn -Dmaven.javadoc.skip=true -DskipTests=true clean install  && \
     mvn -Dmaven.javadoc.skip=true -Dmaven.source.skip -DskipTests=true package && \
     mv planetiler-dist/target/*with-deps.jar $PLANETILER_DIR && \
