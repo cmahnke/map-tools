@@ -256,6 +256,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.11.1
+        with:
+          driver-opts: network=host
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -287,6 +289,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.11.1
+        with:
+          driver-opts: network=host
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
