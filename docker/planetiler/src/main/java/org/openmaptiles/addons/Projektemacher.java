@@ -7,6 +7,8 @@ import com.onthegomap.planetiler.util.Parse;
 import org.openmaptiles.util.StreetsUtils;
 import org.openmaptiles.OpenMapTilesProfile;
 
+import java.util.List;
+
 public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcessor {
 
   private static final String LAYER_NAME = "projektemacher";
@@ -23,7 +25,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Double height = StreetsUtils.getTreeHeight(feature);
         //Double height = Parse.meters(feature.getTag("height"));
         features.point("tree")
-          .setAttr("type", "tree")
+          .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
           .setMinZoom(14);
 
@@ -36,14 +38,46 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setMinZoom(14);
       }
     }
+
     if (feature.canBeLine()) {
+
       if (feature.hasTag("natural", "tree_row")) {
-        features.line("tree")
-          .setAttr("type", "tree_row")
-          .setAttr("height", StreetsUtils.getTreeHeight(feature))
+        Double height = StreetsUtils.getTreeHeight(feature);
+        //Double height = Parse.meters(feature.getTag("height"));
+        features.point("tree")
+          .setAttr("type", feature.getTag("natural"))
+          .setAttr("height", height)
           .setMinZoom(14);
+
       }
+
+      if (feature.hasTag("highway")) {
+        features.line("highways")
+          .setAttr("type", "path")
+          .setAttr("pathType", feature.getTag("highway"))
+          .setAttr("surface", StreetsUtils.getSurface(feature))
+          .setAttr("width", StreetsUtils.getWidth(feature))
+          .setAttr("laneMarkings", StreetsUtils.getLaneMarkings(feature))
+          .setAttr("sidewalkSide", StreetsUtils.convertRoadwayExtensionSideToInteger(StreetsUtils.getSidewalkSide(feature)))
+          .setAttr("cyclewaySide", StreetsUtils.convertRoadwayExtensionSideToInteger(StreetsUtils.getCyclewaySide(feature)))
+          .setAttr("oneway", StreetsUtils.isRoadwayOneway(feature));
+
+        //setCommonFeatureParams(feature, feature);
+      }
+
+      if (StreetsUtils.isRailway(feature)) {
+        //var feature =
+        features.line("highways")
+          .setAttr("type", "railway")
+          .setAttr("railwayType", StreetsUtils.getRailwayType(feature))
+          .setAttr("gauge", StreetsUtils.getGauge(feature));
+
+        //setCommonFeatureParams(feature, feature);
+        //return;
+      }
+
     }
+
 
     if (feature.canBePolygon()) {
       if (
@@ -86,7 +120,8 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("roofColor", StreetsUtils.getRoofColor(feature))
           .setAttr("color", StreetsUtils.getBuildingColor(feature))
           .setAttr("windows", StreetsUtils.getBuildingWindows(feature))
-          .setAttr("defaultRoof", StreetsUtils.getBuildingDefaultRoof(feature));
+          .setAttr("defaultRoof", StreetsUtils.getBuildingDefaultRoof(feature))
+          .setMinZoom(13);
       }
     }
   }

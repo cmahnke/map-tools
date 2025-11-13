@@ -117,38 +117,11 @@ public class StreetsUtils {
   }
 
   public static Double getTreeHeight(SourceFeature sourceFeature) {
-    return getHeight(sourceFeature);
-
-    /*Double height = getHeight(sourceFeature);
-
-    if (height != null) {
-      return height;
+    Double height = getHeight(sourceFeature);
+    if (height == DEFAULT_HEIGHT) {
+      return 12d;
     }
-
-    // We need minHeight in case tree height is implied from tags other than "height"
-    Double minHeight = getMinHeight(sourceFeature);
-    if (minHeight == null) minHeight = 0d;
-
-    Double width = parseMeters((String) sourceFeature.getTag("diameter_crown"));
-
-    if (width != null) {
-      return width * 2 + minHeight;
-    }
-
-    // Diameter is in millimeters if no unit of measurement is specified
-    Double diameter = parseMillimeters((String) sourceFeature.getTag("diameter"));
-
-    if (diameter != null) {
-      return diameter * 60 + minHeight;
-    }
-
-    Double circumference = parseMeters((String) sourceFeature.getTag("circumference"));
-
-    if (circumference != null) {
-      return circumference / Math.PI * 60 + minHeight;
-    }
-
-    return null;*/
+    return height;
   }
 
   public static Double getHeight(SourceFeature sourceFeature) {
