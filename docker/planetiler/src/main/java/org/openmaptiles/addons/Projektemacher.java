@@ -44,7 +44,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       if (feature.hasTag("natural", "tree_row")) {
         Double height = StreetsUtils.getTreeHeight(feature);
         //Double height = Parse.meters(feature.getTag("height"));
-        features.point("tree")
+        features.line("tree")
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
           .setMinZoom(14);
