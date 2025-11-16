@@ -23,7 +23,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
     if (feature.isPoint()) {
       if (feature.hasTag("natural", "tree")) {
         Double height = StreetsUtils.getTreeHeight(feature);
-        //Double height = Parse.meters(feature.getTag("height"));
         features.point("tree")
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
@@ -62,7 +61,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("cyclewaySide", StreetsUtils.convertRoadwayExtensionSideToInteger(StreetsUtils.getCyclewaySide(feature)))
           .setAttr("oneway", StreetsUtils.isRoadwayOneway(feature));
 
-        //setCommonFeatureParams(feature, feature);
       }
 
       if (StreetsUtils.isRailway(feature)) {
@@ -72,8 +70,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("railwayType", StreetsUtils.getRailwayType(feature))
           .setAttr("gauge", StreetsUtils.getGauge(feature));
 
-        //setCommonFeatureParams(feature, feature);
-        //return;
       }
 
     }
@@ -123,6 +119,17 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("defaultRoof", StreetsUtils.getBuildingDefaultRoof(feature))
           .setMinZoom(13);
       }
+      /*
+      if (feature.hasTag("natural", "wood")) {
+        Double height = StreetsUtils.getTreeHeight(feature);
+        //Double height = Parse.meters(feature.getTag("height"));
+        features.polygon("tree")
+          .setAttr("type", feature.getTag("natural"))
+          .setAttr("height", height)
+          .setMinZoom(14);
+
+      }
+      */
     }
   }
 
