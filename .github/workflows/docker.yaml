@@ -36,7 +36,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -75,7 +75,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -108,7 +108,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -138,7 +138,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -178,7 +178,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push latest Git version to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -222,7 +222,7 @@ jobs:
 #      - name: Set up QEMU
 #        uses: docker/setup-qemu-action@v3
 #      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3.11.1
+#        uses: docker/setup-buildx-action@v3.12.0
 #      - name: Push latest Git version to GitHub Packages
 #        uses: docker/build-push-action@v6.18.0
 #        with:
@@ -255,7 +255,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
         with:
           driver-opts: network=host
       - name: Push to GitHub Packages
@@ -288,7 +288,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
         with:
           driver-opts: network=host
       - name: Push to GitHub Packages
@@ -320,7 +320,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -350,7 +350,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -380,7 +380,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -410,7 +410,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v6.18.0
         with:
@@ -441,7 +441,7 @@ jobs:
 #      - name: Set up QEMU
 #        uses: docker/setup-qemu-action@v3
 #      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3.11.1
+#        uses: docker/setup-buildx-action@v3.12.0
 #      - name: Push to GitHub Packages
 #        uses: docker/build-push-action@v6.18.0
 #        with:
@@ -471,7 +471,7 @@ jobs:
 #      - name: Set up QEMU
 #        uses: docker/setup-qemu-action@v3
 #      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3.11.1
+#        uses: docker/setup-buildx-action@v3.12.0
 #      - name: Push to GitHub Packages
 #        uses: docker/build-push-action@v6.18.0
 #        with:
