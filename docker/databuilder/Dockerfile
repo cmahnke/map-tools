@@ -5,7 +5,7 @@ FROM ghcr.io/cmahnke/map-tools/osmium:latest AS osmium
 FROM ghcr.io/cmahnke/map-tools/osmosis:latest AS osmosis
 FROM ghcr.io/cmahnke/map-tools/osmctools:latest AS osmctools
 
-FROM alpine:3.22 as builder
+FROM alpine:3.23 as builder
 
 ENV BUILD_DEPS="python3 py3-pip py3-yaml py3-requests temurin-22-jre expat libbz2 zlib boost1.82-program_options lz4-libs geos zip jq" \
     BUILD_DIR=/tmp/build \
@@ -29,7 +29,7 @@ RUN --mount=target=/mnt/build-context \
 
 WORKDIR $BUILD_DIR
 
-FROM alpine:3.22
+FROM alpine:3.23
 
 ENV BUILD_DIR=/tmp/build \
     DATA_DIR=/data \
