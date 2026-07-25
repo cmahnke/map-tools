@@ -6,7 +6,7 @@ LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source=https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git make libboost-program-options-dev libbz2-dev cmake libexpat-dev g++ libgdal-dev libprotobuf-dev liblz4-dev libgeos-dev zlib1g-dev libfmt-dev liblua5.3-dev nlohmann-json3-dev" \
-    RUN_DEPS="expat libgdal34t64 libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options1.74.0 libfmt9 liblua5.3 libprotobuf32t64" \
+    RUN_DEPS="expat libgdal-dev libbz2-1.0 zlib1g liblz4-1 libgeos-c1v5 libboost-program-options-dev libfmt-dev liblua5.3 libprotobuf32t64" \
     #boost1.82-program_options
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
     PROTOZERO_TAG="v1.7.1" \
@@ -38,28 +38,28 @@ RUN --mount=target=/mnt/build-context \
     git clone $LIBOSMIUM_REPO --branch $LIBOSMIUM_TAG --single-branch && \
     cd libosmium && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make && \
     cd ../.. && \
 # Osmium Surplus
     git clone $OSMIUM_SURPLUS_REPO --branch $OSMIUM_SURPLUS_TAG --single-branch && \
     cd osmium-surplus && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make install && \
     cd ../.. && \
 # OSM Tags Transform
     git clone $OSM_TAGS_TRANSFORM_REPO --branch $OSM_TAGS_TRANSFORM_TAG --single-branch && \
     cd osm-tags-transform && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DATA_TESTS=OFF .. && \
     make install && \
     cd ../.. && \
 # Osmium tool
     git clone $OSMIUM_TOOL_REPO --branch $OSMIUM_TOOL_TAG --single-branch && \
     cd osmium-tool && \
     mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF .. && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/osmium -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF .. && \
     make install && \
     cd / && \
     ln -s /opt/osmium/bin/osmium /usr/local/bin/osmium && \
