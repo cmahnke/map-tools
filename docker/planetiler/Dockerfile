@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-ARG PLANETILER_TAG=v0.9.3
+ARG PLANETILER_TAG=v0.10.2
 ARG DOWNLOAD_DATA=""
 
 FROM maven:3-eclipse-temurin-22 AS builder
