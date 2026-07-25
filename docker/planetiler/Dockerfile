@@ -1,9 +1,7 @@
-# syntax=docker/dockerfile:experimental
-
 ARG PLANETILER_TAG=v0.10.2
 ARG DOWNLOAD_DATA=""
 
-FROM maven:3-eclipse-temurin-22 AS builder
+FROM maven:3-eclipse-temurin-25 AS builder
 
 ARG PLANETILER_TAG
 ARG DOWNLOAD_DATA
@@ -43,7 +41,7 @@ LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 
 ARG DOWNLOAD_DATA
 
-ENV RUN_DEPS="temurin-23-jre" \
+ENV RUN_DEPS="temurin-25-jre" \
     PLANETILER_DIR=/opt/planetiler \
     PLANETILER_DATA_DIR=/usr/share/planetiler
 
@@ -56,15 +54,15 @@ RUN wget -O /etc/apk/keys/adoptium.rsa.pub https://packages.adoptium.net/artifac
     apk --update upgrade && \
     apk add --no-cache $RUN_DEPS && \
     mkdir -p $PLANETILER_DIR/bin && \
-    printf "#!/bin/sh\njava -Xmx2g -jar /opt/planetiler/planetiler*-with-deps.jar" > /opt/planetiler/bin/planetiler && \
+    printf '#!/bin/sh\nexec java -Xmx2g -jar /opt/planetiler/planetiler*-with-deps.jar "$@"\n' > /opt/planetiler/bin/planetiler && \
     chmod +x /opt/planetiler/bin/planetiler && \
     export PATH=$PATH:$PLANETILER_DIR/bin && \
     if test -z "$DOWNLOAD_DATA" ; then \
       echo "Removing existing data directory" && \
-      rm -rf $PLANETILER_DATA_DIR ; \
+      rm -r -f $PLANETILER_DATA_DIR ; \
     else \
       echo "Relinking data directory" && \
       ln -s $PLANETILER_DATA_DIR/data $PLANETILER_DIR/data ; \
     fi && \
 # Cleanup
-    rm -rf /var/cache/apk/* /root/.cache
+    rm -r -f /var/cache/apk/* /root/.cache
