@@ -28,28 +28,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
           .setMinZoom(minZoom);
-
-      }
-
-      if (feature.hasTag("tourism", "artwork")) {
-        features.point("culture")
-          .setAttr("class", feature.getTag("artwork"))
-          .setAttr("name", feature.getTag("name"))
-          .setAttr("artwork_type", feature.getTag("artwork_type"))
-          .setAttr("artist_name", feature.getTag("artist_name"))
-          .setAttr("wikidata", feature.getTag("wikidata"))
-          .setAttr("wikipedia", feature.getTag("wikipedia"))
-          .setMinZoom(minZoom);
-      }
-
-      if (feature.hasTag("historic", "memorial")) {
-        features.point("culture")
-          .setAttr("class", feature.getTag("memorial"))
-          .setAttr("name", feature.getTag("name"))
-          .setAttr("memorial", feature.getTag("memorial"))
-          .setAttr("wikidata", feature.getTag("wikidata"))
-          .setAttr("wikipedia", feature.getTag("wikipedia"))
-          .setMinZoom(minZoom);
       }
     }
 
@@ -62,7 +40,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
           .setMinZoom(minZoom);
-
       }
 
       if (feature.hasTag("highway")) {
@@ -182,7 +159,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       }
 
       if (feature.hasTag("natural", "wood")) {
-        features.polygon("for est")
+        features.polygon("forest")
           .setAttr("type", "wood")
           .setAttr("name", feature.getTag("name"))
           .setAttr("leaf_type", feature.getTag("leaf_type"))

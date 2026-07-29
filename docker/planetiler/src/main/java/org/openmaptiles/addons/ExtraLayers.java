@@ -13,7 +13,8 @@ public class ExtraLayers {
 
   public static List<Layer> create(Translations translations, PlanetilerConfig config, Stats stats) {
     return List.of(
-      new Projektemacher()
+      new Projektemacher(),
+      new Culture()
     );
   }
 }
