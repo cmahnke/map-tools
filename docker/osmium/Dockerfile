@@ -6,11 +6,11 @@ LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
 ENV BUILD_DEPS="git make boost-dev bzip2-dev cmake expat-dev g++ gdal-dev protoc protobuf-dev lz4-dev geos-dev fmt-dev sqlite-dev lua5.3-dev" \
     RUN_DEPS="expat gdal libbz2 zlib boost1.84-program_options lz4-libs geos fmt sqlite-libs lua5.3-libs nlohmann-json" \
     PROTOZERO_REPO=https://github.com/mapbox/protozero.git \
-    PROTOZERO_TAG="v1.7.1" \
+    PROTOZERO_TAG="v1.8.2" \
     LIBOSMIUM_REPO=https://github.com/osmcode/libosmium.git \
-    LIBOSMIUM_TAG="v2.22.0" \
+    LIBOSMIUM_TAG="v2.23.1" \
     OSMIUM_TOOL_REPO=https://github.com/osmcode/osmium-tool \
-    OSMIUM_TOOL_TAG="v1.18.0" \
+    OSMIUM_TOOL_TAG="v1.19.0" \
     OSMIUM_SURPLUS_REPO="https://github.com/osmcode/osmium-surplus.git" \
     OSMIUM_SURPLUS_TAG="master" \
     OSM_TAGS_TRANSFORM_REPO="https://github.com/osmcode/osm-tags-transform" \
