@@ -97,6 +97,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("architecture", feature.getTag("architecture"))
           .setAttr("construction_date", feature.getTag("construction_date"))
           .setAttr("wikidata", feature.getTag("wikidata"))
+          .setAttr("meta", feature.getTag("meta"))
           //.setAttr("buildingType", buildingType)
           .setAttr("name", feature.getTag("name"))
           .setAttr("height", StreetsUtils.getHeight(feature))

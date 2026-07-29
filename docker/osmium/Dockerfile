@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:experimental
-
 FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
