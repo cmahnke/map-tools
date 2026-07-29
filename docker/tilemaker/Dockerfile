@@ -1,9 +1,7 @@
-# syntax=docker/dockerfile:experimental
-
 FROM alpine:3.22
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
+LABEL org.opencontainers.image.source=https://github.com/cmahnke/map-tools
 
 ENV BUILD_DEPS="git wget cmake make libtool autoconf automake alpine-sdk zlib-dev sqlite-dev bzip2-dev lz4-dev boost-dev lua5.1-dev gettext-dev protoc protobuf-dev bzip2-dev rapidjson-dev" \
     RUN_DEPS="zlib sqlite-libs bzip2 lz4-libs boost1.84-program_options boost1.84-filesystem boost1.84-iostreams protobuf lua5.1-libs bash" \
@@ -27,6 +25,8 @@ RUN --mount=target=/mnt/build-context \
 # Tilemaker
     git clone --depth 1 --branch $TILEMAKER_GIT_TAG $TILEMAKER_GIT_REPO && \
     cd tilemaker && \
+    sed -i '/#include <sys\/stat.h>/! s/^/#include <sys\/stat.h>\n/' src/helpers.cpp || true && \
+    sed -i 's/struct stat64/struct stat/g; s/stat64(/stat(/g' src/helpers.cpp || true && \
     mkdir build && \
     cd build && \
 # TODO: Check how to enable -DTILEMAKER_BUILD_STATIC=ON
