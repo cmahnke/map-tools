@@ -78,6 +78,14 @@ updates:
         patterns:
         - '*'
   - package-ecosystem: "docker"
+    directory: "/docker/tilemaker/"
+    schedule:
+      interval: "daily"
+    groups:
+      docker:
+        patterns:
+        - '*'
+  - package-ecosystem: "docker"
     directory: "/docker/planetiler/"
     ignore:
       - dependency-name: "maven"

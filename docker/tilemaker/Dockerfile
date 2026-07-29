@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:3.24
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source=https://github.com/cmahnke/map-tools
@@ -36,7 +36,6 @@ RUN --mount=target=/mnt/build-context \
     make install && \
     cp -r ../resources /opt/tilemaker && \
     cd / && \
-
 # Create links
     for filepath in /opt/**/bin/* ; do \
         filename=$(basename $filepath) ; \
