@@ -27,6 +27,8 @@ RUN --mount=target=/mnt/build-context \
     cd tilemaker && \
     sed -i '/#include <sys\/stat.h>/! s/^/#include <sys\/stat.h>\n/' src/helpers.cpp || true && \
     sed -i 's/struct stat64/struct stat/g; s/stat64(/stat(/g' src/helpers.cpp || true && \
+    sed -i '5i #include <cstdint>' include/output_object.h || true && \
+    sed -i 's/uint mz/unsigned int mz/' include/output_object.h || true && \
     mkdir build && \
     cd build && \
 # TODO: Check how to enable -DTILEMAKER_BUILD_STATIC=ON
