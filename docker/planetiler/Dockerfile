@@ -37,7 +37,7 @@ RUN --mount=target=/mnt/build-context \
 FROM alpine:3.24
 
 LABEL maintainer="cmahnke@gmail.com"
-LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
+LABEL org.opencontainers.image.source=https://github.com/cmahnke/map-tools
 
 ARG DOWNLOAD_DATA
 

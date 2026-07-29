@@ -12,6 +12,7 @@ import java.util.List;
 public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcessor {
 
   private static final String LAYER_NAME = "projektemacher";
+  public int minZoom = 13;
 
   @Override
   public String name() {
@@ -26,15 +27,29 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         features.point("tree")
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
-          .setMinZoom(14);
+          .setMinZoom(minZoom);
 
       }
 
       if (feature.hasTag("tourism", "artwork")) {
-        features.point("artwork")
+        features.point("culture")
+          .setAttr("class", feature.getTag("artwork"))
           .setAttr("name", feature.getTag("name"))
           .setAttr("artwork_type", feature.getTag("artwork_type"))
-          .setMinZoom(14);
+          .setAttr("artist_name", feature.getTag("artist_name"))
+          .setAttr("wikidata", feature.getTag("wikidata"))
+          .setAttr("wikipedia", feature.getTag("wikipedia"))
+          .setMinZoom(minZoom);
+      }
+
+      if (feature.hasTag("historic", "memorial")) {
+        features.point("culture")
+          .setAttr("class", feature.getTag("memorial"))
+          .setAttr("name", feature.getTag("name"))
+          .setAttr("memorial", feature.getTag("memorial"))
+          .setAttr("wikidata", feature.getTag("wikidata"))
+          .setAttr("wikipedia", feature.getTag("wikipedia"))
+          .setMinZoom(minZoom);
       }
     }
 
@@ -43,37 +58,78 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       if (feature.hasTag("natural", "tree_row")) {
         Double height = StreetsUtils.getTreeHeight(feature);
         //Double height = Parse.meters(feature.getTag("height"));
-        features.line("tree")
+        features.line("tree_row")
           .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
-          .setMinZoom(14);
+          .setMinZoom(minZoom);
 
       }
 
       if (feature.hasTag("highway")) {
-        features.line("highways")
+        String highwayValue = feature.getTag("highway").toString();
+        boolean isConstruction = "construction".equals(highwayValue);
+        String effectiveHighway = isConstruction && feature.hasTag("construction")
+          ? feature.getTag("construction").toString()
+          : highwayValue;
+
+        boolean isBridge = feature.hasTag("bridge") && !feature.hasTag("bridge", "no");
+        boolean isTunnel = feature.hasTag("tunnel") && !feature.hasTag("tunnel", "no");
+        boolean isFord   = feature.hasTag("ford")   && !feature.hasTag("ford", "no");
+        String brunnel = isBridge ? "bridge" : isTunnel ? "tunnel" : isFord ? "ford" : null;
+
+        features.line("streetscape")
           .setAttr("type", "path")
-          .setAttr("pathType", feature.getTag("highway"))
+          .setAttr("pathType", effectiveHighway)
           .setAttr("surface", StreetsUtils.getSurface(feature))
           .setAttr("width", StreetsUtils.getWidth(feature))
           .setAttr("laneMarkings", StreetsUtils.getLaneMarkings(feature))
           .setAttr("sidewalkSide", StreetsUtils.convertRoadwayExtensionSideToInteger(StreetsUtils.getSidewalkSide(feature)))
           .setAttr("cyclewaySide", StreetsUtils.convertRoadwayExtensionSideToInteger(StreetsUtils.getCyclewaySide(feature)))
-          .setAttr("oneway", StreetsUtils.isRoadwayOneway(feature));
+          .setAttr("oneway", StreetsUtils.isRoadwayOneway(feature))
+          .setAttr("ref", feature.getTag("ref"))
+          .setAttr("service", feature.getTag("service"))
+          .setAttr("access", feature.getTag("access"))
+          .setAttr("brunnel", brunnel)
 
+          // --- Zugang / Erlaubnis ---
+          .setAttr("bicycle", feature.getTag("bicycle"))
+          .setAttr("foot", feature.getTag("foot"))
+          .setAttr("vehicle", feature.getTag("vehicle"))
+          .setAttr("motorVehicle", feature.getTag("motor_vehicle"))
+          .setAttr("moped", feature.getTag("moped"))
+          .setAttr("smallElectricVehicle", feature.getTag("small_electric_vehicle"))
+          .setAttr("onewayBicycle", feature.getTag("oneway:bicycle"))
+
+          // --- Rad-spezifisch ---
+          .setAttr("cycleway", feature.getTag("cycleway"))
+          .setAttr("segregated", feature.getTag("segregated"))
+          .setAttr("bicycleRoad", feature.getTag("bicycle_road"))
+
+          // --- Fußgänger-spezifisch ---
+          .setAttr("footway", feature.getTag("footway"))
+          .setAttr("crossing", feature.getTag("crossing"))
+          .setAttr("wheelchair", feature.getTag("wheelchair"))
+          .setAttr("tactilePaving", feature.getTag("tactile_paving"))
+          .setAttr("kerb", feature.getTag("kerb"))
+
+          // --- Komfort / Zustand ---
+          .setAttr("smoothness", feature.getTag("smoothness"))
+          .setAttr("incline", feature.getTag("incline"))
+          .setAttr("lit", feature.getTag("lit"))
+
+          .setMinZoom(StreetsUtils.getHighwayMinZoom(effectiveHighway));
       }
 
+      /*
       if (StreetsUtils.isRailway(feature)) {
-        //var feature =
-        features.line("highways")
+        features.line("railway")
           .setAttr("type", "railway")
           .setAttr("railwayType", StreetsUtils.getRailwayType(feature))
           .setAttr("gauge", StreetsUtils.getGauge(feature));
 
       }
-
+      */
     }
-
 
     if (feature.canBePolygon()) {
       if (
@@ -94,9 +150,13 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("highlight", feature.getTag("highlight"))
           //TODO: This might also be part of the relation conneting building parts
           .setAttr("architect", feature.getTag("architect"))
+          .setAttr("architect:wikidata", feature.getTag("architect:wikidata"))
           .setAttr("architecture", feature.getTag("architecture"))
           .setAttr("construction_date", feature.getTag("construction_date"))
+          .setAttr("year_of_construction", feature.getTag("year_of_construction"))
+          .setAttr("start_date", feature.getTag("start_date"))
           .setAttr("wikidata", feature.getTag("wikidata"))
+          .setAttr("wikipedia", feature.getTag("wikipedia"))
           .setAttr("meta", feature.getTag("meta"))
           //.setAttr("buildingType", buildingType)
           .setAttr("name", feature.getTag("name"))
@@ -118,19 +178,16 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setAttr("color", StreetsUtils.getBuildingColor(feature))
           .setAttr("windows", StreetsUtils.getBuildingWindows(feature))
           .setAttr("defaultRoof", StreetsUtils.getBuildingDefaultRoof(feature))
-          .setMinZoom(13);
+          .setMinZoom(minZoom);
       }
-      /*
-      if (feature.hasTag("natural", "wood")) {
-        Double height = StreetsUtils.getTreeHeight(feature);
-        //Double height = Parse.meters(feature.getTag("height"));
-        features.polygon("tree")
-          .setAttr("type", feature.getTag("natural"))
-          .setAttr("height", height)
-          .setMinZoom(14);
 
+      if (feature.hasTag("natural", "wood")) {
+        features.polygon("for est")
+          .setAttr("type", "wood")
+          .setAttr("name", feature.getTag("name"))
+          .setAttr("leaf_type", feature.getTag("leaf_type"))
+          .setMinZoom(minZoom);
       }
-      */
     }
   }
 

@@ -475,4 +475,20 @@ public class StreetsUtils {
 
     return null;
   }
+
+  public static int getHighwayMinZoom(String highway) {
+    return switch (highway) {
+      case "motorway", "motorway_link" -> 4;
+      case "trunk", "trunk_link" -> 5;
+      case "primary", "primary_link" -> 7;
+      case "secondary", "secondary_link" -> 9;
+      case "tertiary", "tertiary_link" -> 10;
+      case "unclassified", "residential", "living_street", "road" -> 12;
+      case "service" -> 13;
+      case "pedestrian" -> 13;
+      case "track", "path", "footway", "cycleway", "bridleway", "steps", "corridor" -> 14;
+      default -> 14;
+    };
+  }
+
 }
