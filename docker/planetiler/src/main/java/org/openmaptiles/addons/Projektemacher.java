@@ -26,6 +26,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Double height = StreetsUtils.getTreeHeight(feature);
         features.point("tree")
           .setAttr("type", feature.getTag("natural"))
+          .setAttr("genus", feature.getTag("genus"))
           .setAttr("height", height)
           .setMinZoom(minZoom);
       }
@@ -121,7 +122,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Boolean isPart = feature.hasTag("building:part");
         //String buildingType = isPart ? (String) feature.getTag("building:part") : (String) feature.getTag("building");
 
-        features.polygon("building")
+        features.polygon("projektemacher-building")
           .setAttr("type", "building")
           .setAttr("isPart", isPart)
           .setAttr("highlight", feature.getTag("highlight"))
