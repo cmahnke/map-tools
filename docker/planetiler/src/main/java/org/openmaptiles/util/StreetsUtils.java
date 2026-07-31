@@ -119,7 +119,15 @@ public class StreetsUtils {
   public static Double getTreeHeight(SourceFeature sourceFeature) {
     Double height = getHeight(sourceFeature);
     if (height == DEFAULT_HEIGHT) {
-      return 12d;
+      return 10d;
+    }
+    return height;
+  }
+
+  public static Double getWallHeight(SourceFeature sourceFeature) {
+    Double height = getHeight(sourceFeature);
+    if (height == DEFAULT_HEIGHT) {
+      return 2d;
     }
     return height;
   }
@@ -134,12 +142,10 @@ public class StreetsUtils {
     } else if (estHeight != null) {
       return parseMeters(estHeight);
     } else if (levels != null) {
-      /*
       String underground = (String) sourceFeature.getTag("building:levels:underground");
       if (underground != null) {
         return (Integer.parseInt(levels) - Integer.parseInt(underground)) * DEFAULT_HEIGHT;
       }
-      */
       return Float.parseFloat(levels) * DEFAULT_HEIGHT;
     }
 

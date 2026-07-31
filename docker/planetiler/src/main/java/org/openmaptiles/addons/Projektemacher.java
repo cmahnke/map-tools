@@ -25,7 +25,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       if (feature.hasTag("natural", "tree")) {
         Double height = StreetsUtils.getTreeHeight(feature);
         features.point("tree")
-          .setAttr("type", feature.getTag("natural"))
           .setAttr("genus", feature.getTag("genus"))
           .setAttr("height", height)
           .setMinZoom(minZoom);
@@ -38,10 +37,19 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Double height = StreetsUtils.getTreeHeight(feature);
         //Double height = Parse.meters(feature.getTag("height"));
         features.line("tree_row")
-          .setAttr("type", feature.getTag("natural"))
           .setAttr("height", height)
           .setMinZoom(minZoom);
       }
+
+      if (feature.hasTag("barrier", "wall")) {
+        Double height = StreetsUtils.getWallHeight(feature);
+        //Double height = Parse.meters(feature.getTag("height"));
+        features.line("barrier")
+          .setAttr("height", height)
+          .setMinZoom(minZoom);
+      }
+
+      barrier=wall
 
       if (feature.hasTag("highway")) {
         String highwayValue = feature.getTag("highway").toString();
