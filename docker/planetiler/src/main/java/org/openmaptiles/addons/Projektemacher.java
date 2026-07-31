@@ -49,8 +49,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setMinZoom(minZoom);
       }
 
-      barrier=wall
-
       if (feature.hasTag("highway")) {
         String highwayValue = feature.getTag("highway").toString();
         boolean isConstruction = "construction".equals(highwayValue);
