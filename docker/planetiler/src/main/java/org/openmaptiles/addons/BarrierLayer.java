@@ -21,7 +21,10 @@ public class BarrierLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor 
     if (feature.canBeLine() && feature.hasTag("barrier", "wall")) {
       Double height = StreetsUtils.getWallHeight(feature);
       features.line(LAYER_NAME)
+        .setAttr("class", feature.getTag("barrier"))
         .setAttr("height", height)
+        .setAttr("color", feature.getTag("color"))
+        .setAttr("material", feature.getTag("material"))
         .setMinZoom(minZoom);
     }
   }

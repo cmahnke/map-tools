@@ -18,7 +18,8 @@ public class ExtraLayers {
       new TreeLayer(),
       new TreeRowLayer(),
       new BarrierLayer(),
-      new ForestLayer()
+      new ForestLayer(),
+      new StreetscapeLayer()
     );
   }
 }
