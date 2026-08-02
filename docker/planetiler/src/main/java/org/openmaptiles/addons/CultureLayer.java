@@ -5,7 +5,7 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import org.openmaptiles.Layer;
 import org.openmaptiles.OpenMapTilesProfile;
 
-public class Culture implements Layer, OpenMapTilesProfile.OsmAllProcessor {
+public class CultureLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor {
 
   private static final String LAYER_NAME = "culture";
   public int minZoom = 14;

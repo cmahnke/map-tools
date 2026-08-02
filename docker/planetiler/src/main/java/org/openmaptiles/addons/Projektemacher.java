@@ -21,34 +21,7 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
 
   @Override
   public void processAllOsm(SourceFeature feature, FeatureCollector features) {
-    if (feature.isPoint()) {
-      if (feature.hasTag("natural", "tree")) {
-        Double height = StreetsUtils.getTreeHeight(feature);
-        features.point("tree")
-          .setAttr("genus", feature.getTag("genus"))
-          .setAttr("height", height)
-          .setMinZoom(minZoom);
-      }
-    }
-
     if (feature.canBeLine()) {
-
-      if (feature.hasTag("natural", "tree_row")) {
-        Double height = StreetsUtils.getTreeHeight(feature);
-        //Double height = Parse.meters(feature.getTag("height"));
-        features.line("tree_row")
-          .setAttr("height", height)
-          .setMinZoom(minZoom);
-      }
-
-      if (feature.hasTag("barrier", "wall")) {
-        Double height = StreetsUtils.getWallHeight(feature);
-        //Double height = Parse.meters(feature.getTag("height"));
-        features.line("barrier")
-          .setAttr("height", height)
-          .setMinZoom(minZoom);
-      }
-
       if (feature.hasTag("highway")) {
         String highwayValue = feature.getTag("highway").toString();
         boolean isConstruction = "construction".equals(highwayValue);
