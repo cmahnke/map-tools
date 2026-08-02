@@ -17,7 +17,8 @@ public class ExtraLayers {
       new CultureLayer(),
       new TreeLayer(),
       new TreeRowLayer(),
-      new BarrierLayer()
+      new BarrierLayer(),
+      new ForestLayer()
     );
   }
 }

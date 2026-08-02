@@ -19,9 +19,10 @@ public class TreeRowLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor 
   @Override
   public void processAllOsm(SourceFeature feature, FeatureCollector features) {
     if (feature.canBeLine() && feature.hasTag("natural", "tree_row")) {
-      Double height = StreetsUtils.getTreeHeight(feature);
       features.line(LAYER_NAME)
-        .setAttr("height", height)
+        .setAttr("height", StreetsUtils.getTreeHeight(feature))
+        .setAttr("genus", StreetsUtils.getGenus(feature))
+        .setAttr("leaf_type", StreetsUtils.getLeafType(feature))
         .setMinZoom(minZoom);
     }
   }

@@ -71,13 +71,6 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
           .setMinZoom(minZoom);
       }
 
-      if (feature.hasTag("natural", "wood")) {
-        features.polygon("forest")
-          .setAttr("type", "wood")
-          .setAttr("name", feature.getTag("name"))
-          .setAttr("leaf_type", feature.getTag("leaf_type"))
-          .setMinZoom(minZoom);
-      }
     }
   }
 

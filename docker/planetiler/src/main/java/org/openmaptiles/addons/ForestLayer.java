@@ -6,9 +6,9 @@ import org.openmaptiles.Layer;
 import org.openmaptiles.OpenMapTilesProfile;
 import org.openmaptiles.util.StreetsUtils;
 
-public class TreeLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor {
+public class ForestLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor {
 
-  private static final String LAYER_NAME = "tree";
+  private static final String LAYER_NAME = "forest";
   public int minZoom = 13;
 
   @Override
@@ -18,10 +18,10 @@ public class TreeLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor {
 
   @Override
   public void processAllOsm(SourceFeature feature, FeatureCollector features) {
-    if (feature.isPoint() && feature.hasTag("natural", "tree")) {
-      features.point(LAYER_NAME)
-        .setAttr("height", StreetsUtils.getTreeHeight(feature))
-        .setAttr("genus", StreetsUtils.getGenus(feature))
+    if (feature.canBePolygon() && feature.hasTag("natural", "wood")) {
+      features.polygon(LAYER_NAME)
+        .setAttr("type", "wood")
+        .setAttr("name", feature.getTag("name"))
         .setAttr("leaf_type", StreetsUtils.getLeafType(feature))
         .setMinZoom(minZoom);
     }
