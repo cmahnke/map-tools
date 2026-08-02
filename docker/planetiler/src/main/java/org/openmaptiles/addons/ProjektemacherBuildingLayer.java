@@ -1,17 +1,23 @@
 package org.openmaptiles.addons;
 
+import static com.onthegomap.planetiler.util.MemoryEstimator.CLASS_HEADER_BYTES;
+
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import org.openmaptiles.Layer;
 import com.onthegomap.planetiler.util.Parse;
+import com.onthegomap.planetiler.reader.osm.OsmElement;
+import com.onthegomap.planetiler.reader.osm.OsmRelationInfo;
+import com.onthegomap.planetiler.ForwardingProfile;
 import org.openmaptiles.util.StreetsUtils;
 import org.openmaptiles.OpenMapTilesProfile;
 
 import java.util.List;
 
-public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcessor {
+public class ProjektemacherBuildingLayer implements Layer, OpenMapTilesProfile.OsmAllProcessor, ForwardingProfile.OsmRelationPreprocessor {
 
-  private static final String LAYER_NAME = "projektemacher";
+  private static final String LAYER_NAME = "projektemacher-building";
+  public static final String HIDE_3D = "hide_3d";
   public int minZoom = 13;
 
   @Override
@@ -34,9 +40,19 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
         Boolean isPart = feature.hasTag("building:part");
         //String buildingType = isPart ? (String) feature.getTag("building:part") : (String) feature.getTag("building");
 
+        Boolean hide3d = null;
+        var relations = feature.relationInfo(BuildingRelationInfo.class);
+        for (var relation : relations) {
+          if ("outline".equals(relation.role())) {
+            hide3d = true;
+            break;
+          }
+        }
+
         features.polygon("projektemacher-building")
           .setAttr("type", "building")
           .setAttr("isPart", isPart)
+          .setAttr(HIDE_3D, hide3d)
           .setAttr("highlight", feature.getTag("highlight"))
           //TODO: This might also be part of the relation conneting building parts
           .setAttr("architect", feature.getTag("architect"))
@@ -72,6 +88,18 @@ public class Projektemacher implements Layer, OpenMapTilesProfile.OsmAllProcesso
       }
 
     }
+  }
+
+  @Override
+  public List<OsmRelationInfo> preprocessOsmRelation(OsmElement.Relation relation) {
+    if (relation.hasTag("type", "building")) {
+      return List.of(new BuildingRelationInfo(relation.id()));
+    }
+    return null;
+  }
+
+  private record BuildingRelationInfo(long id) implements OsmRelationInfo {
+
   }
 
 }
