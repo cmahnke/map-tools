@@ -56,6 +56,7 @@ public class ProjektemacherBuildingLayer implements Layer, OpenMapTilesProfile.O
           .setAttr("highlight", feature.getTag("highlight"))
           .setAttr("description", feature.getTag("description"))
           .setAttr("name", feature.getTag("name"))
+          .setAttr("projektemacher:url", feature.getTag("projektemacher:url"))
           //TODO: This might also be part of the relation conneting building parts
           .setAttr("architect", feature.getTag("architect"))
           .setAttr("architect:wikidata", feature.getTag("architect:wikidata"))
