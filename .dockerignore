@@ -6,5 +6,3 @@ docker/data/scripts/core
 docker/data/scripts/*.osm.pbf
 docker/data/scripts/lake_centerline
 docker/data/scripts/natural_earth_vector
-**/TODO
-docker/planetiler-native/src
