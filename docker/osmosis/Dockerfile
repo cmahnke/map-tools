@@ -1,4 +1,4 @@
-FROM maven:3-eclipse-temurin-24 AS builder
+FROM maven:3-eclipse-temurin-26 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
