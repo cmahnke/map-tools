@@ -204,7 +204,6 @@ jobs:
 
   build_planetiler_native:
     name: Push planetiler native Docker image to GitHub Packages
-    needs: [build_planetiler]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -212,7 +211,7 @@ jobs:
         include:
           - version: main
             IMAGE_TAG: latest
-          - version: v0.7.0
+          - version: v0.10.2
             IMAGE_TAG: 0.10.2
     steps:
       - name: Check out the repo
