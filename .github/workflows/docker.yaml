@@ -36,9 +36,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -75,9 +75,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -108,9 +108,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -138,9 +138,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -181,14 +181,14 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
         with:
           driver-opts: |
             image=moby/buildkit:latest
             network=host
           buildkitd-flags: --allow-insecure-entitlement security.insecure
       - name: Push latest Git version to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -229,9 +229,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push latest Git version to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -262,11 +262,11 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
         with:
           driver-opts: network=host
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -295,14 +295,14 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
         with:
           driver-opts: |
             image=moby/buildkit:latest
             network=host
           buildkitd-flags: --allow-insecure-entitlement security.insecure
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -330,9 +330,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -360,9 +360,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -390,9 +390,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -420,9 +420,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.0
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           context: .
@@ -451,9 +451,9 @@ jobs:
 #      - name: Set up QEMU
 #        uses: docker/setup-qemu-action@v4
 #      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v4.3.0
+#        uses: docker/setup-buildx-action@v4.4.0
 #      - name: Push to GitHub Packages
-#        uses: docker/build-push-action@v7.3.0
+#        uses: docker/build-push-action@v7.4.0
 #        with:
 #          push: true
 #          context: .
@@ -481,9 +481,9 @@ jobs:
 #      - name: Set up QEMU
 #        uses: docker/setup-qemu-action@v4
 #      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v4.3.0
+#        uses: docker/setup-buildx-action@v4.4.0
 #      - name: Push to GitHub Packages
-#        uses: docker/build-push-action@v7.3.0
+#        uses: docker/build-push-action@v7.4.0
 #        with:
 #          push: true
 #          context: .
