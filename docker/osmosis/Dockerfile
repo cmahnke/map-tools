@@ -1,4 +1,4 @@
-FROM maven:3-eclipse-temurin-24 AS builder
+FROM maven:3-eclipse-temurin-26 AS builder
 
 ARG OSMOSIS_TAG=0.49.2
 
@@ -22,7 +22,7 @@ RUN mkdir -p $BUILD_DIR $OSMOSIS_DIR && \
     /opt/gradle/bin/gradle build -x test && \
     cp osmosis/build/distributions/osmosis-*.zip /opt/osmosis
 
-FROM alpine:3.22
+FROM alpine:3.24
 
 LABEL maintainer="cmahnke@gmail.com"
 LABEL org.opencontainers.image.source https://github.com/cmahnke/map-tools
